@@ -1,6 +1,6 @@
 <template>
 	<q-layout view="lHh Lpr lFf">
-		<q-header elevated>
+		<q-header>
 			<q-toolbar>
 				<q-btn
 					flat
@@ -12,8 +12,6 @@
 				/>
 
 				<q-toolbar-title> Financial Tracker </q-toolbar-title>
-
-				<!-- <div>Quasar v{{ $q.version }}</div> -->
 			</q-toolbar>
 		</q-header>
 
@@ -24,6 +22,15 @@
 					:key="drawerItem.title"
 					v-bind="drawerItem"
 				/>
+				<q-item clickable @click="handleLogout">
+					<q-item-section avatar>
+						<q-icon name="logout" />
+					</q-item-section>
+
+					<q-item-section>
+						<q-item-label>Log Out</q-item-label>
+					</q-item-section>
+				</q-item>
 			</q-list>
 		</q-drawer>
 
@@ -35,9 +42,14 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+
 import DrawerItem, {
 	type DrawerItemProps,
 } from 'src/components/DrawerItem.vue';
+
+import { anonClient } from 'src/supabase/anon-client';
+import { useNotify } from 'src/composables/useNotify';
 
 const drawerItems: DrawerItemProps[] = [
 	{
@@ -51,10 +63,17 @@ const drawerItems: DrawerItemProps[] = [
 		to: '/settings',
 	},
 ];
-
 const leftDrawerOpen = ref(false);
-
 function toggleLeftDrawer() {
 	leftDrawerOpen.value = !leftDrawerOpen.value;
 }
+
+const router = useRouter();
+const handleLogout = async () => {
+	const { error } = await anonClient.auth.signOut();
+	if (error) {
+		useNotify('negative', 'Sign Out Failed', error.message);
+	}
+	router.push('/auth');
+};
 </script>

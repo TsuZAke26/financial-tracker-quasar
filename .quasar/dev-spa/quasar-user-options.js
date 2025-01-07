@@ -13,7 +13,9 @@
 
 
 
+import {Notify} from 'quasar'
 
 
-export default { config: {"dark":"auto"} }
+
+export default { config: {"dark":"auto"},plugins: {Notify} }
 
