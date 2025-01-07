@@ -29,6 +29,12 @@
 				/>
 			</q-form>
 		</q-card-section>
+		<q-card-section class="row justify-center">
+			<div>
+				Not registered yet?
+				<a href="#" @click="$emit('sign-up')">Sign up here</a>
+			</div>
+		</q-card-section>
 	</q-card>
 </template>
 
@@ -39,6 +45,8 @@ import { anonClient } from 'src/supabase/anon-client';
 
 import { useNotify } from 'src/composables/useNotify';
 import type { AuthError } from '@supabase/supabase-js';
+
+defineEmits(['sign-up']);
 
 const router = useRouter();
 
