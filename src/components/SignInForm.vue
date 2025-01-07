@@ -72,7 +72,7 @@ const handleSignIn = async () => {
 			const { error } = await anonClient.auth.signInWithOtp({
 				email: username.value,
 				options: {
-					emailRedirectTo: process.env.SUPABASE_REDIRECT_URL as string,
+					emailRedirectTo: process.env.VITE_SUPABASE_REDIRECT_URL as string,
 					shouldCreateUser: false,
 				},
 			});
