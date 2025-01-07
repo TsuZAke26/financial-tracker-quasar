@@ -1,0 +1,42 @@
+<template>
+	<q-page class="row items-start justify-evenly q-pa-lg">
+		<q-card flat bordered class="settings-card">
+			<q-card-section class="text-h5 text-weight-bold">Settings</q-card-section>
+			<q-card-section>
+				<div class="text-h6 text-weight-medium">Appearance</div>
+				<q-list>
+					<q-item clickable @click="handleDarkToggle">
+						<q-item-section>
+							<div class="text-body1">Dark Mode</div></q-item-section
+						>
+						<q-item-section side>
+							<q-toggle v-model="settings.appearance.dark" />
+						</q-item-section>
+					</q-item>
+				</q-list>
+			</q-card-section>
+		</q-card>
+	</q-page>
+</template>
+
+<script setup lang="ts">
+import { useQuasar } from 'quasar';
+import { storeUser } from 'src/stores/user';
+
+const $q = useQuasar();
+
+const user = storeUser();
+const { settings } = user;
+
+const handleDarkToggle = () => {
+	$q.dark.toggle();
+	settings.appearance.dark = $q.dark.isActive;
+};
+</script>
+
+<style scoped>
+.settings-card {
+	width: 500px;
+	height: 500px;
+}
+</style>
