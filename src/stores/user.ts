@@ -13,6 +13,9 @@ export const storeUser = defineStore('user', () => {
 		appearance: {
 			dark: Dark.isActive,
 		},
+		financial: {
+			currencySymbol: '$',
+		},
 	});
 
 	const loadAppSettings = async () => {

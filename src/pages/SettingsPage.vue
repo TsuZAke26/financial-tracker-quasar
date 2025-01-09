@@ -15,6 +15,24 @@
 					</q-item>
 				</q-list>
 			</q-card-section>
+			<q-card-section>
+				<div class="text-h6 text-weight-medium">Financial</div>
+				<q-list>
+					<q-item>
+						<q-item-section>
+							<div class="text-body1">Currency Symbol</div>
+						</q-item-section>
+						<q-item-section side style="max-width: 3rem">
+							<q-input
+								v-model="settings.financial.currencySymbol"
+								:maxlength="1"
+								outlined
+								dense
+							/>
+						</q-item-section>
+					</q-item>
+				</q-list>
+			</q-card-section>
 			<q-card-actions align="right">
 				<q-btn
 					label="Save Settings"
@@ -35,6 +53,9 @@ import { storeUser } from 'src/stores/user';
 export interface AppSettings {
 	appearance: {
 		dark: boolean;
+	};
+	financial: {
+		currencySymbol: string;
 	};
 }
 
