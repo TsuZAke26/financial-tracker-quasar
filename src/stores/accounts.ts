@@ -1,12 +1,13 @@
 import { type Ref, ref } from 'vue';
 import { defineStore, acceptHMRUpdate } from 'pinia';
-import type { RealtimeChannel } from '@supabase/supabase-js';
+import type { PostgrestError, RealtimeChannel } from '@supabase/supabase-js';
 
 import { useNotify } from 'src/composables/useNotify';
 import { anonClient } from 'src/supabase/anon-client';
 import type { Database } from 'src/supabase/types';
 
 export const storeAccounts = defineStore('accounts', () => {
+	const loading = ref(false);
 	const accounts: Ref<Database['public']['Tables']['accounts']['Row'][]> = ref(
 		[]
 	);
@@ -25,14 +26,26 @@ export const storeAccounts = defineStore('accounts', () => {
 	};
 
 	const loadAccounts = async () => {
-		const { data, error } = await anonClient.from('accounts').select();
+		try {
+			loading.value = true;
+			const { data, error } = await anonClient.from('accounts').select();
 
-		if (error) {
-			useNotify('negative', 'Error loading accounts', error.message);
-		}
-		if (data) {
-			accounts.value = data;
-			subscribeToAccounts();
+			if (error) {
+				throw error;
+			}
+			if (data) {
+				accounts.value = data;
+				subscribeToAccounts();
+			}
+		} catch (error) {
+			const convertedException = error as PostgrestError;
+			useNotify(
+				'negative',
+				'Error loading accounts',
+				convertedException.message
+			);
+		} finally {
+			loading.value = false;
 		}
 	};
 
@@ -57,6 +70,7 @@ export const storeAccounts = defineStore('accounts', () => {
 
 	return {
 		accounts,
+		loading,
 		loadAccounts,
 		closeAccountsSubscription,
 	};

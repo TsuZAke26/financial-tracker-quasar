@@ -1,9 +1,6 @@
 <template>
 	<q-page class="row items-start justify-evenly q-pa-lg">
-		<Suspense>
-			<AccountsList />
-			<template #fallback> Loading... </template>
-		</Suspense>
+		<AccountsList />
 	</q-page>
 </template>
 
