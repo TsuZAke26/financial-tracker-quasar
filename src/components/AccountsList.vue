@@ -114,6 +114,6 @@ const handleAccountClick = (id: number) => {
 <style scoped>
 .accounts-list-card {
 	width: 100%;
-	min-width: 400px;
+	min-width: 360px;
 }
 </style>

@@ -13,24 +13,36 @@
 						</span>
 					</div>
 				</div>
-				<!-- <div class="text-weight-bold" style="font-size: 1.2rem">
-					{{ account.name }}
-				</div> -->
 
-				<div class="text-weight-bold" style="font-size: 1.5rem; color: green">
+				<div class="text-weight-bold" style="font-size: 1.5rem">
 					{{ formatAmount(settings.financial.currencySymbol, account.balance) }}
 				</div>
 			</div>
-			<!-- <div v-if="account && creditUtilization > -1" class="row justify-end">
-				<div class="text-weight-medium">
+		</q-card-section>
+	</q-card>
+
+	<!-- <q-page-sticky position="top" expand>
+		<q-toolbar
+			v-if="account"
+			class="bg-secondary row justify-between items-start"
+		>
+			<div>
+				<div class="text-weight-bold" style="font-size: 1.2rem">
+					{{ account.name }}
+				</div>
+				<div v-if="creditUtilization !== -1" class="text-weight-medium">
 					Utilization:
 					<span :style="creditUtilizationStyle(creditUtilization)">
 						{{ creditUtilization.toFixed(0) }}%
 					</span>
 				</div>
-			</div> -->
-		</q-card-section>
-	</q-card>
+			</div>
+
+			<div class="text-weight-bold" style="font-size: 1.5rem">
+				{{ formatAmount(settings.financial.currencySymbol, account.balance) }}
+			</div>
+		</q-toolbar>
+	</q-page-sticky> -->
 </template>
 
 <script setup lang="ts">
