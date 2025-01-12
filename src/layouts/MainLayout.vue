@@ -43,6 +43,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { Dark } from 'quasar';
 
 import DrawerItem, {
 	type DrawerItemProps,
@@ -78,6 +79,7 @@ const handleLogout = async () => {
 		useNotify('negative', 'Sign Out Failed', error.message);
 	} else {
 		closeAccountsSubscription();
+		Dark.set(false);
 		router.push('/auth');
 	}
 };

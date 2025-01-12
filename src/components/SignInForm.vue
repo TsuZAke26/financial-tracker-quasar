@@ -56,7 +56,6 @@ const password = ref('');
 
 const handleSignIn = async () => {
 	try {
-		let successful = false;
 		if (usePassword.value) {
 			const { error } = await anonClient.auth.signInWithPassword({
 				email: username.value,
@@ -67,7 +66,7 @@ const handleSignIn = async () => {
 				throw error;
 			}
 
-			successful = true;
+			router.push({ name: 'home' });
 		} else {
 			const { error } = await anonClient.auth.signInWithOtp({
 				email: username.value,
@@ -81,11 +80,7 @@ const handleSignIn = async () => {
 				throw error;
 			}
 
-			successful = true;
-		}
-
-		if (successful) {
-			router.push({ name: 'home' });
+			useNotify('info', 'Check your email to finish sign-in');
 		}
 	} catch (error) {
 		const supabaseError = error as AuthError;

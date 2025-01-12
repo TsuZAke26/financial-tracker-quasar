@@ -81,7 +81,7 @@ import { useRouter } from 'vue-router';
 import { storeUser } from 'src/stores/user';
 import { storeAccounts } from 'src/stores/accounts';
 
-import { formatAmount } from 'src/util/currency-utils';
+import { formatAmount } from 'src/composables/useCurrency';
 
 const user = storeUser();
 const { settings } = storeToRefs(user);
