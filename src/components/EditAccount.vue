@@ -8,18 +8,20 @@
 				</div>
 			</q-card-section>
 			<q-card-section>
-				<AccountForm
-					@account-form="updateAccountData($event)"
-					:account="account"
-					:loading="loading"
-				/>
+				<q-form ref="editAccountFormRef" @submit="handleSubmit">
+					<AccountForm
+						@account-form="updateAccountData($event)"
+						:account="account"
+						:loading="loading"
+					/>
+				</q-form>
 			</q-card-section>
 			<q-card-section class="row justify-between">
 				<q-btn label="Delete" color="negative" @click="handleDelete" />
 				<q-btn
 					label="Submit"
 					color="secondary"
-					@click="handleSubmit"
+					@click="editAccountFormRef?.submit()"
 					:loading="loading"
 				/>
 			</q-card-section>
@@ -28,15 +30,16 @@
 </template>
 
 <script setup lang="ts">
-import { type PropType, reactive, ref } from 'vue';
+import { type PropType, type Ref, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { useDialogPluginComponent, useQuasar } from 'quasar';
+import { QForm, useDialogPluginComponent, useQuasar } from 'quasar';
+import type { PostgrestError } from '@supabase/supabase-js';
 
-import AccountForm from './AccountForm.vue';
 import { useNotify } from 'src/composables/useNotify';
 import { anonClient } from 'src/supabase/anon-client';
-import type { PostgrestError } from '@supabase/supabase-js';
 import type { Database } from 'src/supabase/types';
+
+import AccountForm from './AccountForm.vue';
 
 defineEmits({
 	...useDialogPluginComponent.emits,
@@ -51,6 +54,7 @@ const props = defineProps({
 
 const { dialogRef, onDialogHide } = useDialogPluginComponent();
 
+const editAccountFormRef: Ref<QForm | null> = ref(null);
 const accountData: {
 	id: number;
 	name: string;

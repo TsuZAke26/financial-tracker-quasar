@@ -8,6 +8,7 @@
 			:rules="[(val) => !!val || 'Enter an account name']"
 		/>
 		<q-select
+			:disable="account?.account_type?.length > 0"
 			v-model="localAccount.account_type"
 			@update:model-value="$emit('account-form', localAccount)"
 			label="Account Type"
@@ -36,6 +37,7 @@
 
 <script setup lang="ts">
 import { onMounted, reactive, type PropType } from 'vue';
+
 import type { Database } from 'src/supabase/types';
 
 const props = defineProps({

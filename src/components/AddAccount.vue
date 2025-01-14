@@ -8,17 +8,19 @@
 				</div>
 			</q-card-section>
 			<q-card-section>
-				<AccountForm
-					@account-form="updateAccountData($event)"
-					:loading="loading"
-				/>
+				<q-form ref="addAccountFormRef" @submit="handleSubmit">
+					<AccountForm
+						@account-form="updateAccountData($event)"
+						:loading="loading"
+					/>
+				</q-form>
 			</q-card-section>
 			<q-card-section>
 				<div class="row justify-end">
 					<q-btn
 						label="Submit"
 						color="secondary"
-						@click="handleSubmit"
+						@click="addAccountFormRef?.submit()"
 						:loading="loading"
 					/>
 				</div>
@@ -28,14 +30,15 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from 'vue';
-import { useDialogPluginComponent } from 'quasar';
+import { reactive, type Ref, ref } from 'vue';
+import { QForm, useDialogPluginComponent } from 'quasar';
+import type { PostgrestError } from '@supabase/supabase-js';
 
-import AccountForm from './AccountForm.vue';
 import { useNotify } from 'src/composables/useNotify';
 import { anonClient } from 'src/supabase/anon-client';
-import type { PostgrestError } from '@supabase/supabase-js';
 import type { Database } from 'src/supabase/types';
+
+import AccountForm from './AccountForm.vue';
 
 defineEmits({
 	...useDialogPluginComponent.emits,
@@ -43,6 +46,7 @@ defineEmits({
 
 const { dialogRef, onDialogHide } = useDialogPluginComponent();
 
+const addAccountFormRef: Ref<QForm | null> = ref(null);
 const accountData: {
 	name: string;
 	account_type: 'Checking' | 'Savings' | 'Credit Line';
