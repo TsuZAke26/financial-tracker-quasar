@@ -1,5 +1,5 @@
 <template>
-	<div class="col q-gutter-sm">
+	<div v-if="transactionsInStore.length > 0" class="col q-gutter-sm">
 		<TransactionItem
 			v-for="transaction in pagedTransactions"
 			:key="transaction.id"
@@ -25,6 +25,7 @@
 			/>
 		</div>
 	</div>
+	<div v-else class="text-center">No transactions found</div>
 </template>
 
 <script setup lang="ts">

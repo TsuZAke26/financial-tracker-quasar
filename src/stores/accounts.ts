@@ -16,12 +16,31 @@ export const storeAccounts = defineStore('accounts', () => {
 	const findAccountIndex = (id: number) => {
 		return accounts.value.findIndex((account) => id === account.id);
 	};
-	const updateAccountsEntry = (
-		account: Database['public']['Tables']['accounts']['Row']
-	) => {
-		const index = findAccountIndex(account.id);
+
+	const getAccountById = (id: number) => {
+		const index = findAccountIndex(id);
 		if (index !== -1) {
-			accounts.value.splice(index, 1, account);
+			return accounts.value[index];
+		}
+	};
+
+	const updateAccountsStore = (
+		eventType: string,
+		account: Database['public']['Tables']['accounts']['Row'],
+		old: { id: number }
+	) => {
+		switch (eventType) {
+			case 'INSERT':
+				accounts.value.push(account);
+				break;
+			case 'UPDATE':
+				accounts.value.splice(findAccountIndex(account.id), 1, account);
+				break;
+			case 'DELETE':
+				accounts.value.splice(findAccountIndex(old.id), 1);
+				break;
+			default:
+				console.error('Unsupported event type');
 		}
 	};
 
@@ -56,8 +75,10 @@ export const storeAccounts = defineStore('accounts', () => {
 				'postgres_changes',
 				{ event: '*', schema: 'public', table: 'accounts' },
 				(payload) => {
-					updateAccountsEntry(
-						payload.new as Database['public']['Tables']['accounts']['Row']
+					updateAccountsStore(
+						payload.eventType,
+						payload.new as Database['public']['Tables']['accounts']['Row'],
+						payload.old as { id: number }
 					);
 				}
 			)
@@ -70,6 +91,7 @@ export const storeAccounts = defineStore('accounts', () => {
 
 	return {
 		accounts,
+		getAccountById,
 		loading,
 		loadAccounts,
 		closeAccountsSubscription,

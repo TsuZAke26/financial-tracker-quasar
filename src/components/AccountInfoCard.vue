@@ -19,6 +19,13 @@
 				</div>
 			</div>
 		</q-card-section>
+		<q-card-actions align="right">
+			<q-btn
+				label="Edit Account"
+				color="secondary"
+				@click="showEditAccountDialog"
+			/>
+		</q-card-actions>
 	</q-card>
 
 	<!-- <q-page-sticky position="top" expand>
@@ -48,11 +55,13 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { storeToRefs } from 'pinia';
+import { Dialog } from 'quasar';
 
+import { formatAmount } from 'src/composables/useCurrency';
 import { storeUser } from 'src/stores/user';
 import { storeAccounts } from 'src/stores/accounts';
 
-import { formatAmount } from 'src/composables/useCurrency';
+import EditAccount from './EditAccount.vue';
 
 const props = defineProps({
 	accountId: {
@@ -66,6 +75,7 @@ const user = storeUser();
 const { settings } = user;
 
 const accounts = storeAccounts();
+const { getAccountById } = accounts;
 const { accounts: accountsInStore } = storeToRefs(accounts);
 
 const account = computed(() => {
@@ -98,6 +108,18 @@ const creditUtilizationStyle = (utilization: number) => {
 	}
 
 	return textColor;
+};
+
+const showEditAccountDialog = () => {
+	const account = getAccountById(Number.parseInt(props.accountId));
+	if (account) {
+		Dialog.create({
+			component: EditAccount,
+			componentProps: {
+				account: account,
+			},
+		});
+	}
 };
 </script>
 
