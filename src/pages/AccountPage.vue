@@ -40,18 +40,28 @@
 		</q-card>
 
 		<!-- <AccountInfoCard :account-id="id" /> -->
+		<q-page-sticky position="bottom-right" :offset="[24, 24]">
+			<q-btn
+				fab
+				icon="add"
+				color="secondary"
+				@click="showAddTransactionDialog"
+			/>
+		</q-page-sticky>
 	</q-page>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { Dialog } from 'quasar';
 
 import { storeTransactions } from 'src/stores/transactions';
 
 import AccountInfoCard from 'src/components/AccountInfoCard.vue';
 import AccountTabTransactions from 'src/components/AccountTabTransactions.vue';
+import AddTransaction from 'src/components/AddTransaction.vue';
 
-defineProps({
+const props = defineProps({
 	id: {
 		type: String,
 		required: true,
@@ -64,6 +74,15 @@ const { resetTransactions } = transactions;
 const tab = ref('transactions');
 
 resetTransactions();
+
+const showAddTransactionDialog = () => {
+	Dialog.create({
+		component: AddTransaction,
+		componentProps: {
+			accountId: Number.parseInt(props.id),
+		},
+	}).onOk(() => console.log('add transaction form: ok'));
+};
 </script>
 
 <style scoped></style>

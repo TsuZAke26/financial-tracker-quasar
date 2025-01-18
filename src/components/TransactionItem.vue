@@ -1,7 +1,8 @@
 <template>
 	<div
-		class="rounded-borders col items-center q-pa-sm"
+		class="rounded-borders col items-center q-pa-sm cursor-pointer"
 		style="border: 1px solid gray"
+		@click="handleClick"
 	>
 		<!-- Top Row (name & amount) -->
 		<div class="row justify-between items-start">
@@ -38,6 +39,7 @@
 
 <script setup lang="ts">
 import type { PropType } from 'vue';
+import { Dialog } from 'quasar';
 
 import { storeUser } from 'src/stores/user';
 
@@ -45,7 +47,9 @@ import type { Database } from 'src/supabase/types';
 
 import { formatAmount, styleAmount } from 'src/composables/useCurrency';
 
-defineProps({
+import EditTransaction from 'src/components/EditTransaction.vue';
+
+const props = defineProps({
 	transaction: {
 		type: Object as PropType<
 			Database['public']['Tables']['transactions']['Row']
@@ -56,6 +60,15 @@ defineProps({
 
 const user = storeUser();
 const { settings } = user;
+
+const handleClick = () => {
+	Dialog.create({
+		component: EditTransaction,
+		componentProps: {
+			transaction: props.transaction
+		}
+	}).onOk(() => console.log('edit transaction form: ok'));
+};
 </script>
 
 <style scoped></style>
