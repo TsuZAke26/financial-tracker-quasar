@@ -65,8 +65,8 @@ const handleClick = () => {
 	Dialog.create({
 		component: EditTransaction,
 		componentProps: {
-			transaction: props.transaction
-		}
+			transaction: props.transaction,
+		},
 	}).onOk(() => console.log('edit transaction form: ok'));
 };
 </script>

@@ -56,7 +56,7 @@
 			@update:model-value="$emit('transaction-form', localTransaction)"
 			:rules="[
 				(val) =>
-					/^\d{1,}(\.\d{1,2})?$/.test(val) ||
+					/^-?\d{1,}(\.\d{1,2})?$/.test(val) ||
 					'Enter a valid transaction amount',
 			]"
 		>
@@ -113,9 +113,7 @@ const localTransaction: {
 
 onMounted(() => {
 	if (props.transaction) {
-		const test = Object.assign(localTransaction, props.transaction);
-		console.log(test);
-		console.log('localTransaction', localTransaction);
+		Object.assign(localTransaction, props.transaction);
 	}
 });
 </script>

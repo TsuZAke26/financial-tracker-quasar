@@ -37,6 +37,7 @@ import { QForm, useDialogPluginComponent, useQuasar } from 'quasar';
 import type { PostgrestError } from '@supabase/supabase-js';
 
 import { useNotify } from 'src/composables/useNotify';
+import { storeTransactions } from 'src/stores/transactions';
 import { anonClient } from 'src/supabase/anon-client';
 import type { Database } from 'src/supabase/types';
 
@@ -53,13 +54,12 @@ const props = defineProps({
 		>,
 		required: true,
 	},
-	accountId: {
-		type: Number,
-		required: true,
-	},
 });
 
 const { dialogRef, onDialogHide } = useDialogPluginComponent();
+
+const transactions = storeTransactions();
+const { addTransactionToStore, removeTransactionFromStore } = transactions;
 
 const editTransactionFormRef: Ref<QForm | null> = ref(null);
 const transactionData: {
@@ -70,7 +70,7 @@ const transactionData: {
 	name: string;
 	amount: number;
 } = reactive({
-	account_id: props.accountId,
+	account_id: props.transaction.account_id,
 	category_main: '',
 	category_misc: null,
 	date: new Date().toISOString().split('T')[0] as string,
@@ -102,19 +102,25 @@ const handleSubmit = async () => {
 			throw new Error('Not authenticated');
 		}
 		const payload: Database['public']['Tables']['transactions']['Update'] = {
-			account_id: props.accountId,
+			account_id: props.transaction.account_id,
 			category_main: transactionData.category_main,
 			category_misc: transactionData.category_misc,
 			date: transactionData.date,
 			name: transactionData.name,
 			amount: transactionData.amount,
 		};
-		const { error } = await anonClient
-			.from('accounts')
+		const { data, error } = await anonClient
+			.from('transactions')
 			.update(payload)
-			.eq('id', props.transaction.id);
+			.eq('id', props.transaction.id)
+			.select();
 		if (error) {
 			throw error;
+		}
+		if (data) {
+			const updatedTransaction =
+				data[0] as Database['public']['Tables']['transactions']['Row'];
+			addTransactionToStore(updatedTransaction);
 		}
 		onDialogHide();
 
@@ -150,6 +156,7 @@ const handleDelete = () => {
 			if (error) {
 				throw error;
 			}
+			removeTransactionFromStore(props.transaction.id);
 
 			useNotify('positive', 'Transaction Deleted');
 			onDialogHide();

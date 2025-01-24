@@ -16,7 +16,7 @@
 			/>
 		</div>
 
-		<div class="row justify-center">
+		<div v-if="!allPagesLoaded" class="row justify-center">
 			<q-btn
 				label="Load More Transactions"
 				@click="loadTransactions(accountId)"
@@ -31,6 +31,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { storeToRefs } from 'pinia';
+
 import { storeTransactions } from 'src/stores/transactions';
 
 import TransactionItem from './TransactionItem.vue';
@@ -44,7 +45,8 @@ const props = defineProps({
 
 const transactions = storeTransactions();
 const { loadTransactions } = transactions;
-const { transactions: transactionsInStore } = storeToRefs(transactions);
+const { transactions: transactionsInStore, allPagesLoaded } =
+	storeToRefs(transactions);
 
 await loadTransactions(props.accountId);
 

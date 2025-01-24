@@ -6,6 +6,7 @@ import type { PostgrestError } from '@supabase/supabase-js';
 import { useNotify } from 'src/composables/useNotify';
 import type { Database } from 'src/supabase/types';
 import { anonClient } from 'src/supabase/anon-client';
+import { sortTransactionsDesc } from 'src/util/transaction-utils';
 
 const fetchSize = 10;
 
@@ -39,6 +40,16 @@ export const storeTransactions = defineStore('transactions', () => {
 			transactions.value.splice(index, 1, transaction);
 		} else {
 			transactions.value.push(transaction);
+		}
+		transactions.value.sort(sortTransactionsDesc);
+	};
+
+	const removeTransactionFromStore = (id: number) => {
+		const index = transactions.value.findIndex(
+			(storeTransaction) => id === storeTransaction.id
+		);
+		if (index !== -1) {
+			transactions.value.splice(index, 1);
 		}
 	};
 
@@ -87,6 +98,8 @@ export const storeTransactions = defineStore('transactions', () => {
 
 	return {
 		transactions,
+		addTransactionToStore,
+		removeTransactionFromStore,
 		loadTransactions,
 		allPagesLoaded,
 		resetTransactions,
