@@ -10,7 +10,10 @@
 							<div class="text-body1">Dark Mode</div>
 						</q-item-section>
 						<q-item-section side>
-							<q-toggle v-model="settings.appearance.dark" />
+							<q-toggle
+								v-model="settings.appearance.dark"
+								@update:model-value="handleDarkToggle"
+							/>
 						</q-item-section>
 					</q-item>
 				</q-list>

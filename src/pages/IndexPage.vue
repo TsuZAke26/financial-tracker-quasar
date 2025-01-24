@@ -6,7 +6,7 @@
 				fab
 				icon="add"
 				color="secondary"
-				label="Add Account"
+				label="Account"
 				@click="showAddAccountDialog"
 			/>
 		</q-page-sticky>

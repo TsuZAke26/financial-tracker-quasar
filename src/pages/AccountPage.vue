@@ -34,7 +34,7 @@
 				</q-tab-panel>
 
 				<q-tab-panel name="import-export">
-					<div class="text-h6">Import or export transactions</div>
+					<AccountTabImportExport :account-id="Number.parseInt(id)" />
 				</q-tab-panel>
 			</q-tab-panels>
 		</q-card>
@@ -45,6 +45,7 @@
 				fab
 				icon="add"
 				color="secondary"
+				label="Transaction"
 				@click="showAddTransactionDialog"
 			/>
 		</q-page-sticky>
@@ -59,6 +60,7 @@ import { storeTransactions } from 'src/stores/transactions';
 
 import AccountInfoCard from 'src/components/AccountInfoCard.vue';
 import AccountTabTransactions from 'src/components/AccountTabTransactions.vue';
+import AccountTabImportExport from 'src/components/AccountTabImportExport.vue';
 import AddTransaction from 'src/components/AddTransaction.vue';
 
 const props = defineProps({
