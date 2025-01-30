@@ -137,36 +137,33 @@ const exportYear = ref(new Date().getFullYear());
 const exportMonth = ref(new Date().getMonth() + 1);
 const handleExport = async () => {
 	try {
+		const exportMonthForStr = exportMonth.value.toString().padStart(2, '0');
+
 		const dateStart = exportYear.value
 			.toString()
 			.concat('-')
-			.concat(exportMonth.value.toString().padStart(2, '0'))
+			.concat(exportMonthForStr)
 			.concat('-')
 			.concat('01');
+
 		let monthEndDay = '';
-		switch (exportMonth.value) {
-			case 2:
-				monthEndDay = '28';
-				if (exportYear.value % 4 === 0) {
-					monthEndDay = '29';
-				}
-				break;
-			case 4:
-			case 6:
-			case 9:
-			case 11:
-				monthEndDay = '30';
-				break;
-			default:
-				monthEndDay = '31';
-				break;
+		if (exportMonthForStr === '02') {
+			monthEndDay = '28';
+			if (exportYear.value % 4 === 0) {
+				monthEndDay = '29';
+			}
+		} else if (['04', '06', '09', '11'].includes(exportMonthForStr)) {
+			monthEndDay = '30';
+		} else {
+			monthEndDay = '31';
 		}
 		const dateEnd = exportYear.value
 			.toString()
 			.concat('-')
-			.concat(exportMonth.value.toString())
+			.concat(exportMonthForStr)
 			.concat('-')
 			.concat(monthEndDay);
+
 		const { data, error } = await anonClient
 			.from('transactions')
 			.select('category_main, category_misc, name, date, amount')
@@ -176,8 +173,13 @@ const handleExport = async () => {
 		if (error) {
 			throw error;
 		}
-		if (data) {
+		if (data && data.length > 0) {
 			createTransactionExport(data);
+		} else {
+			useNotify(
+				'info',
+				`No transactions were found for ${exportYear.value}-${exportMonthForStr}`
+			);
 		}
 	} catch (error) {
 		const supabaseError = error as PostgrestError;
