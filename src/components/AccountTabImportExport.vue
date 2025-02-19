@@ -1,4 +1,5 @@
 <template>
+	<!-- Import Transaction controls -->
 	<div class="q-col-gutter-sm">
 		<div class="text-h5 text-weight-bold">Import</div>
 		<div class="row justify-between items-center q-gutter-md">
@@ -22,11 +23,13 @@
 				color="secondary"
 				label="Template"
 				@click="generateImportTemplate"
-				:loading="loading"
 			/>
 		</div>
 	</div>
+
 	<div class="q-my-lg" />
+
+	<!-- Export Transactions controls -->
 	<div class="q-col-gutter-sm">
 		<div class="text-h5 text-weight-bold">Export</div>
 		<div class="row justify-start items-start q-gutter-md">
