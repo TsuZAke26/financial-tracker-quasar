@@ -71,11 +71,11 @@ const transactionData: {
 	amount: number;
 } = reactive({
 	account_id: props.transaction.account_id,
-	category_main: '',
-	category_misc: null,
-	date: new Date().toISOString().split('T')[0] as string,
-	name: '',
-	amount: 0,
+	category_main: props.transaction.category_main,
+	category_misc: props.transaction.category_misc,
+	date: props.transaction.date,
+	name: props.transaction.name,
+	amount: props.transaction.amount,
 });
 
 const updateTransactionData = (event: {
