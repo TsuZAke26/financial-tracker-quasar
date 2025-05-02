@@ -1,6 +1,7 @@
 export const TRANSACTION_CATEGORIES_MAIN = [
 	'Automotive',
 	'Bills',
+	'Debts',
 	'Deposit',
 	'Education',
 	'Entertainment',
