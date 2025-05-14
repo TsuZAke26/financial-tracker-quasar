@@ -60,6 +60,7 @@ import { storeToRefs } from 'pinia';
 import { storeAccounts } from 'src/stores/accounts';
 
 // import { formatAmount } from 'src/composables/useCurrency';
+import { sortByName } from 'src/util/account-utils';
 
 import AccountsListCard from './AccountsListCard.vue';
 
@@ -72,9 +73,9 @@ const { accounts: accountsInStore, loading } = storeToRefs(accounts);
 
 const accountsByType = computed(() => {
 	return (type: 'Checking' | 'Savings' | 'Credit Line') => {
-		return accountsInStore.value.filter(
-			(account) => account.account_type === type
-		);
+		return accountsInStore.value
+			.filter((account) => account.account_type === type)
+			.sort(sortByName);
 	};
 });
 
