@@ -28,7 +28,7 @@
 						multiple
 						stack-label
 						label="Categories"
-						input-style="max-height: 300px"
+						behavior="menu"
 					/>
 				</div>
 
