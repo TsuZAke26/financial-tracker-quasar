@@ -33,9 +33,8 @@
 import { type PropType, type Ref, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { QForm, useDialogPluginComponent, useQuasar } from 'quasar';
-import type { PostgrestError } from '@supabase/supabase-js';
 
-import { useNotify } from 'src/composables/useNotify';
+import { storeAccounts } from 'src/stores/accounts';
 import { anonClient } from 'src/supabase/anon-client';
 import type { Database } from 'src/supabase/types';
 
@@ -53,6 +52,9 @@ const props = defineProps({
 });
 
 const { dialogRef, onDialogHide } = useDialogPluginComponent();
+
+const accounts = storeAccounts();
+const { updateAccount, deleteAccount } = accounts;
 
 const editAccountFormRef: Ref<QForm | null> = ref(null);
 const accountData: {
@@ -79,33 +81,22 @@ const updateAccountData = (event: {
 const loading = ref(false);
 const handleSubmit = async () => {
 	try {
-		loading.value = true;
-
 		const userId = (await anonClient.auth.getSession()).data.session?.user.id;
 		if (!userId) {
 			throw new Error('Not authenticated');
 		}
-		const payload: Database['public']['Tables']['accounts']['Insert'] = {
+		const payload: Database['public']['Tables']['accounts']['Update'] = {
 			id: accountData.id,
 			user_id: userId as string,
 			name: accountData.name,
 			account_type: accountData.account_type,
 			max_balance: accountData.max_balance,
 		};
-		const { error } = await anonClient
-			.from('accounts')
-			.update(payload)
-			.eq('id', accountData.id);
-		if (error) {
-			throw error;
-		}
-		onDialogHide();
+		await updateAccount(payload);
 
-		useNotify('positive', 'Account updated successfully');
+		onDialogHide();
 	} catch (error) {
-		const supabaseError = error as PostgrestError;
-		console.error(supabaseError);
-		useNotify('negative', 'Error updating account', supabaseError.message);
+		console.error(error);
 	} finally {
 		loading.value = false;
 	}
@@ -121,30 +112,15 @@ const handleDelete = () => {
 	})
 		.onOk(async () => {
 			try {
-				loading.value = true;
-
 				const userId = (await anonClient.auth.getSession()).data.session?.user
 					.id;
 				if (!userId) {
 					throw new Error('Not authenticated');
 				}
-
-				const { error } = await anonClient
-					.from('accounts')
-					.delete()
-					.eq('id', props.account.id);
-				if (error) {
-					throw error;
-				}
-
-				useNotify('positive', 'Account Deleted');
+				await deleteAccount(props.account.id);
 				router.push({ name: 'home' });
 			} catch (error) {
-				const supabaseError = error as PostgrestError;
-				console.error(supabaseError);
-				useNotify('negative', 'Error deleting account', supabaseError.message);
-			} finally {
-				loading.value = false;
+				console.error(error);
 			}
 		})
 		.onCancel(() => {

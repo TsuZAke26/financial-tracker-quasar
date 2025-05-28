@@ -51,7 +51,7 @@ import DrawerItem, {
 
 import { anonClient } from 'src/supabase/anon-client';
 import { useNotify } from 'src/composables/useNotify';
-import { storeAccounts } from 'src/stores/accounts';
+// import { storeAccounts } from 'src/stores/accounts';
 
 const drawerItems: DrawerItemProps[] = [
 	{
@@ -71,14 +71,14 @@ function toggleLeftDrawer() {
 }
 
 const router = useRouter();
-const accounts = storeAccounts();
-const { closeAccountsSubscription } = accounts;
+// const accounts = storeAccounts();
+// const { closeAccountsSubscription } = accounts;
 const handleLogout = async () => {
 	const { error } = await anonClient.auth.signOut();
 	if (error) {
 		useNotify('negative', 'Sign Out Failed', error.message);
 	} else {
-		closeAccountsSubscription();
+		// closeAccountsSubscription();
 		Dark.set(false);
 		router.push('/auth');
 	}

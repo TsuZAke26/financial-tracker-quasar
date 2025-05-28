@@ -32,9 +32,7 @@
 <script setup lang="ts">
 import { reactive, type Ref, ref } from 'vue';
 import { QForm, useDialogPluginComponent } from 'quasar';
-import type { PostgrestError } from '@supabase/supabase-js';
 
-import { useNotify } from 'src/composables/useNotify';
 import { storeTransactions } from 'src/stores/transactions';
 import { anonClient } from 'src/supabase/anon-client';
 import type { Database } from 'src/supabase/types';
@@ -55,7 +53,7 @@ const props = defineProps({
 const { dialogRef, onDialogHide } = useDialogPluginComponent();
 
 const transactions = storeTransactions();
-const { addTransactionToStore } = transactions;
+const { addTransaction } = transactions;
 
 const addTransactionFormRef: Ref<QForm | null> = ref(null);
 const transactionData: {
@@ -105,25 +103,11 @@ const handleSubmit = async () => {
 			name: transactionData.name,
 			amount: transactionData.amount,
 		};
-		const { data, error } = await anonClient
-			.from('transactions')
-			.insert(payload)
-			.select();
-		if (error) {
-			throw error;
-		}
-		if (data) {
-			const newTransaction =
-				data[0] as Database['public']['Tables']['transactions']['Row'];
-			addTransactionToStore(newTransaction);
-		}
-		onDialogHide();
+		await addTransaction(payload);
 
-		useNotify('positive', 'Transaction added successfully');
+		onDialogHide();
 	} catch (error) {
-		const supabaseError = error as PostgrestError;
-		console.error(supabaseError);
-		useNotify('negative', 'Error adding transaction', supabaseError.message);
+		console.error(error);
 	} finally {
 		loading.value = false;
 	}

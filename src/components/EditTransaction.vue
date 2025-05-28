@@ -34,9 +34,7 @@
 <script setup lang="ts">
 import { type PropType, reactive, type Ref, ref } from 'vue';
 import { QForm, useDialogPluginComponent, useQuasar } from 'quasar';
-import type { PostgrestError } from '@supabase/supabase-js';
 
-import { useNotify } from 'src/composables/useNotify';
 import { storeTransactions } from 'src/stores/transactions';
 import { anonClient } from 'src/supabase/anon-client';
 import type { Database } from 'src/supabase/types';
@@ -59,7 +57,7 @@ const props = defineProps({
 const { dialogRef, onDialogHide } = useDialogPluginComponent();
 
 const transactions = storeTransactions();
-const { addTransactionToStore, removeTransactionFromStore } = transactions;
+const { updateTransaction, deleteTransaction } = transactions;
 
 const editTransactionFormRef: Ref<QForm | null> = ref(null);
 const transactionData: {
@@ -102,6 +100,7 @@ const handleSubmit = async () => {
 			throw new Error('Not authenticated');
 		}
 		const payload: Database['public']['Tables']['transactions']['Update'] = {
+			id: props.transaction.id,
 			account_id: props.transaction.account_id,
 			category_main: transactionData.category_main,
 			category_misc: transactionData.category_misc,
@@ -109,26 +108,10 @@ const handleSubmit = async () => {
 			name: transactionData.name,
 			amount: transactionData.amount,
 		};
-		const { data, error } = await anonClient
-			.from('transactions')
-			.update(payload)
-			.eq('id', props.transaction.id)
-			.select();
-		if (error) {
-			throw error;
-		}
-		if (data) {
-			const updatedTransaction =
-				data[0] as Database['public']['Tables']['transactions']['Row'];
-			addTransactionToStore(updatedTransaction);
-		}
+		await updateTransaction(payload);
 		onDialogHide();
-
-		useNotify('positive', 'Transaction updated successfully');
 	} catch (error) {
-		const supabaseError = error as PostgrestError;
-		console.error(supabaseError);
-		useNotify('negative', 'Error updating transaction', supabaseError.message);
+		console.error(error);
 	} finally {
 		loading.value = false;
 	}
@@ -142,34 +125,16 @@ const handleDelete = () => {
 		cancel: true,
 	}).onOk(async () => {
 		try {
-			loading.value = true;
-
 			const userId = (await anonClient.auth.getSession()).data.session?.user.id;
 			if (!userId) {
 				throw new Error('Not authenticated');
 			}
 
-			const { error } = await anonClient
-				.from('transactions')
-				.delete()
-				.eq('id', props.transaction.id);
-			if (error) {
-				throw error;
-			}
-			removeTransactionFromStore(props.transaction.id);
+			await deleteTransaction(props.transaction.id);
 
-			useNotify('positive', 'Transaction Deleted');
 			onDialogHide();
 		} catch (error) {
-			const supabaseError = error as PostgrestError;
-			console.error(supabaseError);
-			useNotify(
-				'negative',
-				'Error deleting transaction',
-				supabaseError.message
-			);
-		} finally {
-			loading.value = false;
+			console.error(error);
 		}
 	});
 };

@@ -32,9 +32,8 @@
 <script setup lang="ts">
 import { reactive, type Ref, ref } from 'vue';
 import { QForm, useDialogPluginComponent } from 'quasar';
-import type { PostgrestError } from '@supabase/supabase-js';
 
-import { useNotify } from 'src/composables/useNotify';
+import { storeAccounts } from 'src/stores/accounts';
 import { anonClient } from 'src/supabase/anon-client';
 import type { Database } from 'src/supabase/types';
 
@@ -45,6 +44,9 @@ defineEmits({
 });
 
 const { dialogRef, onDialogHide } = useDialogPluginComponent();
+
+const accounts = storeAccounts();
+const { addAccount } = accounts;
 
 const addAccountFormRef: Ref<QForm | null> = ref(null);
 const accountData: {
@@ -70,8 +72,6 @@ const updateAccountData = (event: {
 const loading = ref(false);
 const handleSubmit = async () => {
 	try {
-		loading.value = true;
-
 		const userId = (await anonClient.auth.getSession()).data.session?.user.id;
 		if (!userId) {
 			throw new Error('Not authenticated');
@@ -82,19 +82,11 @@ const handleSubmit = async () => {
 			account_type: accountData.account_type,
 			max_balance: accountData.max_balance,
 		};
-		const { error } = await anonClient.from('accounts').insert(payload);
-		if (error) {
-			throw error;
-		}
-		onDialogHide();
+		await addAccount(payload);
 
-		useNotify('positive', 'Account added successfully');
+		onDialogHide();
 	} catch (error) {
-		const supabaseError = error as PostgrestError;
-		console.error(supabaseError);
-		useNotify('negative', 'Error adding account', supabaseError.message);
-	} finally {
-		loading.value = false;
+		console.error(error);
 	}
 };
 </script>
