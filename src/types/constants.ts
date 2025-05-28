@@ -11,7 +11,7 @@ export const TRANSACTION_CATEGORIES_MAIN = [
 	'Gifts',
 	'Groceries',
 	'Health',
-	'Home',
+	'Housing',
 	'Miscellaneous',
 	'Personal',
 	'Pro Services',
