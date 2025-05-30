@@ -67,21 +67,21 @@ export type Database = {
       budgets: {
         Row: {
           account_id: number
-          check_amount: number
           created_at: string
           id: number
+          name: string
         }
         Insert: {
           account_id: number
-          check_amount: number
           created_at?: string
           id?: number
+          name: string
         }
         Update: {
           account_id?: number
-          check_amount?: number
           created_at?: string
           id?: number
+          name?: string
         }
         Relationships: [
           {

@@ -22,6 +22,6 @@ import AddAccount from 'src/components/AddAccount.vue';
 const showAddAccountDialog = () => {
 	Dialog.create({
 		component: AddAccount,
-	}).onOk(() => console.log('add account form: ok'));
+	});
 };
 </script>

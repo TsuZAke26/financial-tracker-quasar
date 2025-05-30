@@ -17,6 +17,7 @@
 			>
 				<q-tab name="transactions" label="Transactions" />
 				<q-tab name="import-export" label="Import/Export" />
+				<q-tab name="budgets" label="Budgets" />
 			</q-tabs>
 			<q-tab-panels v-model="tab" animated>
 				<q-tab-panel name="transactions">
@@ -36,11 +37,29 @@
 				<q-tab-panel name="import-export">
 					<AccountTabImportExport :account-id="Number.parseInt(id)" />
 				</q-tab-panel>
+
+				<q-tab-panel name="budgets">
+					<Suspense>
+						<AccountTabBudgets :account-id="Number.parseInt(id)" />
+						<template #fallback>
+							<div
+								class="row justify-center items-center"
+								style="height: 300px"
+							>
+								<q-spinner size="3rem" />
+							</div>
+						</template>
+					</Suspense>
+				</q-tab-panel>
 			</q-tab-panels>
 		</q-card>
 
 		<!-- <AccountInfoCard :account-id="id" /> -->
-		<q-page-sticky position="bottom-right" :offset="[24, 24]">
+		<q-page-sticky
+			v-if="tab === 'transactions'"
+			position="bottom-right"
+			:offset="[24, 24]"
+		>
 			<q-btn
 				fab
 				icon="add"
@@ -61,6 +80,7 @@ import { storeTransactions } from 'src/stores/transactions';
 import AccountInfoCard from 'src/components/AccountInfoCard.vue';
 import AccountTabTransactions from 'src/components/AccountTabTransactions.vue';
 import AccountTabImportExport from 'src/components/AccountTabImportExport.vue';
+import AccountTabBudgets from 'src/components/AccountTabBudgets.vue';
 import AddTransaction from 'src/components/AddTransaction.vue';
 
 const props = defineProps({
