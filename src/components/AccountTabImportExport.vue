@@ -4,25 +4,25 @@
 		<div class="text-h5 text-weight-bold">Import</div>
 		<div class="row justify-between items-center q-gutter-md">
 			<q-file
-				class="col"
-				outlined
 				v-model="importFile"
-				dense
+				class="col"
 				accept=".csv, text/csv"
 				label="CSV File to Import"
+				dense
+				outlined
 			/>
 			<q-btn
+				:loading="loading"
 				class="col-auto"
+				@click="importTransactions"
 				color="primary"
 				label="Import"
-				@click="importTransactions"
-				:loading="loading"
 			/>
 			<q-btn
 				class="col-auto"
+				@click="generateImportTemplate"
 				color="secondary"
 				label="Template"
-				@click="generateImportTemplate"
 			/>
 		</div>
 	</div>
@@ -35,35 +35,35 @@
 		<div class="row justify-start items-start q-gutter-md">
 			<q-input
 				v-model="exportYear"
-				outlined
-				label="Year"
-				class="col-3"
-				type="number"
 				:rules="[
 					(val: number) =>
 						/^\d{4}$/.test(val.toString()) || 'Enter a valid year',
 				]"
+				class="col-3"
+				label="Year"
+				type="number"
 				dense
 				lazy-rules
+				outlined
 			/>
 			<q-input
 				v-model="exportMonth"
-				outlined
-				label="Month"
-				class="col-3"
-				type="number"
 				:rules="[
 					(val: number) => (val > 0 && val < 13) || 'Enter a valid month',
 				]"
-				lazy-rules
+				class="col-3"
+				label="Month"
 				maxlength="2"
+				type="number"
 				dense
+				lazy-rules
+				outlined
 			/>
 			<q-btn
+				class="col-auto"
 				@click="handleExport"
 				color="primary"
 				label="Export"
-				class="col-auto"
 			/>
 		</div>
 	</div>

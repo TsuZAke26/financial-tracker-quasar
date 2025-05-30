@@ -1,28 +1,28 @@
 <template>
 	<q-dialog ref="dialogRef">
-		<q-card flat bordered class="edit-account-card">
+		<q-card class="edit-account-card" bordered flat>
 			<q-card-section>
 				<div class="row justify-between items-center">
 					<div class="text-body1 text-weight-medium">Edit Account</div>
-					<q-btn dense size="sm" circle icon="close" @click="onDialogHide" />
+					<q-btn @click="onDialogHide" icon="close" size="sm" circle dense />
 				</div>
 			</q-card-section>
 			<q-card-section>
 				<q-form ref="editAccountFormRef" @submit="handleSubmit">
 					<AccountForm
-						@account-form="updateAccountData($event)"
 						:account="account"
 						:loading="loading"
+						@account-form="updateAccountData($event)"
 					/>
 				</q-form>
 			</q-card-section>
 			<q-card-section class="row justify-between">
-				<q-btn label="Delete" color="negative" @click="handleDelete" />
+				<q-btn @click="handleDelete" color="negative" label="Delete" />
 				<q-btn
-					label="Submit"
-					color="secondary"
-					@click="editAccountFormRef?.submit()"
 					:loading="loading"
+					@click="editAccountFormRef?.submit()"
+					color="secondary"
+					label="Submit"
 				/>
 			</q-card-section>
 		</q-card>
@@ -109,26 +109,18 @@ const handleDelete = () => {
 		title: 'Delete Account',
 		message: 'Are you sure you want to delete this account?',
 		cancel: true,
-	})
-		.onOk(async () => {
-			try {
-				const userId = (await anonClient.auth.getSession()).data.session?.user
-					.id;
-				if (!userId) {
-					throw new Error('Not authenticated');
-				}
-				await deleteAccount(props.account.id);
-				router.push({ name: 'home' });
-			} catch (error) {
-				console.error(error);
+	}).onOk(async () => {
+		try {
+			const userId = (await anonClient.auth.getSession()).data.session?.user.id;
+			if (!userId) {
+				throw new Error('Not authenticated');
 			}
-		})
-		.onCancel(() => {
-			// console.log('Cancel')
-		})
-		.onDismiss(() => {
-			// console.log('I am triggered on both OK and Cancel')
-		});
+			await deleteAccount(props.account.id);
+			router.push({ name: 'home' });
+		} catch (error) {
+			console.error(error);
+		}
+	});
 };
 </script>
 

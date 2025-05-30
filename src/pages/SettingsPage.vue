@@ -1,11 +1,11 @@
 <template>
 	<q-page class="row items-start justify-evenly q-pa-lg">
-		<q-card flat bordered class="settings-card">
+		<q-card class="settings-card" bordered flat>
 			<q-card-section class="text-h5 text-weight-bold">Settings</q-card-section>
 			<q-card-section>
 				<div class="text-h6 text-weight-medium">Appearance</div>
 				<q-list>
-					<q-item clickable @click="handleDarkToggle">
+					<q-item @click="handleDarkToggle" clickable>
 						<q-item-section>
 							<div class="text-body1">Dark Mode</div>
 						</q-item-section>
@@ -25,23 +25,18 @@
 						<q-item-section>
 							<div class="text-body1">Currency Symbol</div>
 						</q-item-section>
-						<q-item-section side style="max-width: 3rem">
-							<q-input
-								v-model="settings.financial.currencySymbol"
-								:maxlength="1"
-								outlined
-								dense
-							/>
+						<q-item-section style="max-width: 3rem" side>
+							<q-input v-model="currencySymbol" :maxlength="1" dense outlined />
 						</q-item-section>
 					</q-item>
 				</q-list>
 			</q-card-section>
 			<q-card-actions align="right">
 				<q-btn
-					label="Save Settings"
-					color="secondary"
-					size="md"
 					@click="persistAppSettings"
+					color="secondary"
+					label="Save Settings"
+					size="md"
 				/>
 			</q-card-actions>
 		</q-card>
@@ -51,6 +46,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import { useQuasar } from 'quasar';
+
 import { storeUser } from 'src/stores/user';
 
 export interface AppSettings {
@@ -66,7 +62,7 @@ const $q = useQuasar();
 
 const user = storeUser();
 const { persistAppSettings } = user;
-const { settings } = storeToRefs(user);
+const { settings, currencySymbol } = storeToRefs(user);
 
 const handleDarkToggle = () => {
 	$q.dark.toggle();

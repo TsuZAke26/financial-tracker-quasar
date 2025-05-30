@@ -1,27 +1,27 @@
 <template>
 	<q-dialog ref="dialogRef">
-		<q-card flat bordered class="add-account-card">
+		<q-card class="add-account-card" bordered flat>
 			<q-card-section>
 				<div class="row justify-between items-center">
 					<div class="text-body1 text-weight-medium">Add Account</div>
-					<q-btn dense size="sm" circle icon="close" @click="onDialogHide" />
+					<q-btn @click="onDialogHide" icon="close" size="sm" circle dense />
 				</div>
 			</q-card-section>
 			<q-card-section>
 				<q-form ref="addAccountFormRef" @submit="handleSubmit">
 					<AccountForm
-						@account-form="updateAccountData($event)"
 						:loading="loading"
+						@account-form="updateAccountData($event)"
 					/>
 				</q-form>
 			</q-card-section>
 			<q-card-section>
 				<div class="row justify-end">
 					<q-btn
-						label="Submit"
-						color="secondary"
-						@click="addAccountFormRef?.submit()"
 						:loading="loading"
+						@click="addAccountFormRef?.submit()"
+						color="secondary"
+						label="Submit"
 					/>
 				</div>
 			</q-card-section>

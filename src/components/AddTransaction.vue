@@ -1,27 +1,27 @@
 <template>
 	<q-dialog ref="dialogRef">
-		<q-card flat bordered class="add-transaction-card">
+		<q-card class="add-transaction-card" bordered flat>
 			<q-card-section>
 				<div class="row justify-between items-center">
 					<div class="text-body1 text-weight-medium">Add Transaction</div>
-					<q-btn dense size="sm" circle icon="close" @click="onDialogHide" />
+					<q-btn @click="onDialogHide" icon="close" size="sm" circle dense />
 				</div>
 			</q-card-section>
 			<q-card-section>
 				<q-form ref="addTransactionFormRef" @submit="handleSubmit">
 					<TransactionForm
-						@transaction-form="updateTransactionData($event)"
 						:loading="loading"
+						@transaction-form="updateTransactionData($event)"
 					/>
 				</q-form>
 			</q-card-section>
 			<q-card-section>
 				<div class="row justify-end">
 					<q-btn
-						label="Submit"
-						color="secondary"
-						@click="addTransactionFormRef?.submit()"
 						:loading="loading"
+						@click="addTransactionFormRef?.submit()"
+						color="secondary"
+						label="Submit"
 					/>
 				</div>
 			</q-card-section>

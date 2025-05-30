@@ -1,10 +1,10 @@
 <template>
 	<!-- Transaction Filters -->
 	<q-expansion-item
-		expand-separator
-		label="Filters"
 		class="rounded-borders"
 		style="border: 1px solid gray"
+		label="Filters"
+		expand-separator
 	>
 		<q-card>
 			<q-card-section>
@@ -12,23 +12,23 @@
 				<div class="lt-sm col q-col-gutter-md">
 					<q-input
 						v-model="filters.name"
-						outlined
 						label="Transaction name"
 						clearable
+						outlined
 					>
 						<template #append>
 							<q-icon name="search" />
 						</template>
 					</q-input>
 					<q-select
-						outlined
 						v-model="filters.categories"
 						:options="TRANSACTION_CATEGORIES_MAIN"
-						use-chips
-						multiple
-						stack-label
-						label="Categories"
 						behavior="menu"
+						label="Categories"
+						multiple
+						outlined
+						stack-label
+						use-chips
 					/>
 				</div>
 
@@ -36,24 +36,24 @@
 				<div class="gt-xs row q-gutter-sm">
 					<q-input
 						v-model="filters.name"
-						outlined
+						class="col-8"
 						label="Transaction name"
 						clearable
-						class="col-8"
+						outlined
 					>
 						<template #append>
 							<q-icon name="search" />
 						</template>
 					</q-input>
 					<q-select
-						class="col"
-						outlined
 						v-model="filters.categories"
 						:options="TRANSACTION_CATEGORIES_MAIN"
-						use-chips
-						multiple
-						stack-label
+						class="col"
 						label="Categories"
+						multiple
+						outlined
+						stack-label
+						use-chips
 					/>
 				</div>
 			</q-card-section>
@@ -73,18 +73,18 @@
 		<div class="row justify-center q-my-md">
 			<q-pagination
 				v-model="currentPage"
-				:max="totalPages"
-				direction-links
 				:max-pages="7"
+				:max="totalPages"
 				boundary-numbers
+				direction-links
 			/>
 		</div>
 
 		<div v-if="!allPagesLoaded" class="row justify-center">
 			<q-btn
-				label="Load More Transactions"
 				@click="loadTransactions(accountId)"
 				color="primary"
+				label="Load More Transactions"
 				outlined
 			/>
 		</div>

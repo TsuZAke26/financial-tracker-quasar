@@ -14,9 +14,7 @@
 				:style="styleAmount(transaction.amount)"
 				class="text-weight-medium col-auto"
 			>
-				{{
-					formatAmount(settings.financial.currencySymbol, transaction.amount)
-				}}
+				{{ formatAmount(transaction.amount) }}
 			</div>
 		</div>
 
@@ -24,10 +22,10 @@
 		<div class="row justify-between items-start">
 			<!-- Category -->
 			<div class="row">
-				<q-chip size="sm" color="primary">
+				<q-chip color="primary" size="sm">
 					{{ transaction.category_main }}
 				</q-chip>
-				<q-chip v-if="transaction.category_misc" size="sm" color="secondary">
+				<q-chip v-if="transaction.category_misc" color="secondary" size="sm">
 					{{ transaction.category_misc }}
 				</q-chip>
 			</div>
@@ -41,11 +39,8 @@
 import type { PropType } from 'vue';
 import { Dialog } from 'quasar';
 
-import { storeUser } from 'src/stores/user';
-
-import type { Database } from 'src/supabase/types';
-
 import { formatAmount, styleAmount } from 'src/composables/useCurrency';
+import type { Database } from 'src/supabase/types';
 
 import EditTransaction from 'src/components/EditTransaction.vue';
 
@@ -58,16 +53,13 @@ const props = defineProps({
 	},
 });
 
-const user = storeUser();
-const { settings } = user;
-
 const handleClick = () => {
 	Dialog.create({
 		component: EditTransaction,
 		componentProps: {
 			transaction: props.transaction,
 		},
-	}).onOk(() => console.log('edit transaction form: ok'));
+	});
 };
 </script>
 

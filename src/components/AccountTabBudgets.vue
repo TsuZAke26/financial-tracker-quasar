@@ -1,13 +1,12 @@
 <template>
-	<!-- <div>Budgets</div> -->
-	<!-- <q-separator spaced="1rem" /> -->
+	<!-- List Existing Budgets -->
 	<div v-if="budgets.length > 0">
-		<q-list separator bordered>
+		<q-list bordered separator>
 			<q-item
-				clickable
 				v-for="budget in budgets"
 				:key="budget.id"
 				@click="handleEditBudget(budget)"
+				clickable
 			>
 				<q-item-section class="text-subtitle1 text-weight-medium">
 					{{ budget.name }}
@@ -18,17 +17,18 @@
 
 	<div class="q-my-md" />
 
+	<!-- Add new budget controls -->
 	<div>
 		<q-btn
+			:disabled="showNewBudget"
 			class="fit"
+			@click="showNewBudget = true"
+			color="primary"
 			label="Add New Budget"
 			unelevated
-			color="primary"
-			@click="showNewBudget = true"
-			:disabled="showNewBudget"
 		/>
 		<q-slide-transition>
-			<div class="q-mt-md" v-if="showNewBudget">
+			<div v-if="showNewBudget" class="q-mt-md">
 				<AddBudgetWithExpenses
 					:account-id="accountId"
 					:load-budgets="loadBudgets"
@@ -60,7 +60,7 @@ const showNewBudget = ref(false);
 const accountBudgets = useBudgets();
 const { budgets, loadBudgets } = accountBudgets;
 
-await loadBudgets();
+await loadBudgets(props.accountId);
 
 const handleEditBudget = (
 	budget: Database['public']['Tables']['budgets']['Row']

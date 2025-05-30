@@ -1,5 +1,5 @@
 <template>
-	<q-card flat bordered>
+	<q-card bordered flat>
 		<q-card-section>
 			<div v-if="account" class="row justify-between items-start">
 				<div>
@@ -14,42 +14,23 @@
 					</div>
 				</div>
 
-				<div class="text-weight-bold" style="font-size: 1.5rem">
-					{{ formatAmount(settings.financial.currencySymbol, account.balance) }}
+				<div
+					:class="styleAmount(account.balance)"
+					class="text-weight-bold"
+					style="font-size: 1.5rem"
+				>
+					{{ formatAmount(account.balance) }}
 				</div>
 			</div>
 		</q-card-section>
 		<q-card-actions align="right">
 			<q-btn
-				label="Edit Account"
-				color="secondary"
 				@click="showEditAccountDialog"
+				color="secondary"
+				label="Edit Account"
 			/>
 		</q-card-actions>
 	</q-card>
-
-	<!-- <q-page-sticky position="top" expand>
-		<q-toolbar
-			v-if="account"
-			class="bg-secondary row justify-between items-start"
-		>
-			<div>
-				<div class="text-weight-bold" style="font-size: 1.2rem">
-					{{ account.name }}
-				</div>
-				<div v-if="creditUtilization !== -1" class="text-weight-medium">
-					Utilization:
-					<span :style="creditUtilizationStyle(creditUtilization)">
-						{{ creditUtilization.toFixed(0) }}%
-					</span>
-				</div>
-			</div>
-
-			<div class="text-weight-bold" style="font-size: 1.5rem">
-				{{ formatAmount(settings.financial.currencySymbol, account.balance) }}
-			</div>
-		</q-toolbar>
-	</q-page-sticky> -->
 </template>
 
 <script setup lang="ts">
@@ -57,8 +38,7 @@ import { computed } from 'vue';
 import { storeToRefs } from 'pinia';
 import { Dialog } from 'quasar';
 
-import { formatAmount } from 'src/composables/useCurrency';
-import { storeUser } from 'src/stores/user';
+import { formatAmount, styleAmount } from 'src/composables/useCurrency';
 import { storeAccounts } from 'src/stores/accounts';
 
 import EditAccount from './EditAccount.vue';
@@ -70,9 +50,6 @@ const props = defineProps({
 	},
 });
 const accountIdAsNumber = Number.parseInt(props.accountId);
-
-const user = storeUser();
-const { settings } = user;
 
 const accounts = storeAccounts();
 const { getAccountById } = accounts;

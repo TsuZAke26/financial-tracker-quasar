@@ -1,6 +1,6 @@
 <template>
 	<q-dialog ref="dialogRef">
-		<q-card bordered flat class="edit-budget-card">
+		<q-card class="edit-budget-card" bordered flat>
 			<q-card-section class="text-h6">
 				Edit Budget: {{ budget.name }}
 			</q-card-section>
@@ -13,12 +13,12 @@
 			<!-- List Expenses -->
 			<q-card-section>
 				<div v-if="localExpenses.length > 0">
-					<q-list separator bordered>
+					<q-list bordered separator>
 						<q-slide-item
 							v-for="expense in localExpenses"
 							:key="expense.id"
-							right-color="red"
 							@right="deleteExpense(expense.id)"
+							right-color="red"
 						>
 							<template v-slot:right>
 								<q-icon name="delete" />
@@ -27,33 +27,34 @@
 							<!-- Edit Expense line item -->
 							<q-item v-if="expense.edit">
 								<div class="row no-wrap q-gutter-sm">
-									<q-input v-model="expense.name" dense outlined class="fit" />
+									<q-input v-model="expense.name" class="fit" dense outlined />
 									<q-input
 										v-model.number="expense.amount"
+										class="col-4"
+										type="number"
 										dense
 										outlined
-										type="number"
-										class="col-4"
 									/>
 									<q-btn
-										icon="check"
-										color="positive"
 										class="col-1"
 										@click="updateExpense(expense)"
+										color="positive"
+										icon="check"
 									/>
 								</div>
 							</q-item>
 
 							<!-- Regular Expense line item -->
-							<q-item v-else clickable @click="expense.edit = true">
+							<q-item v-else @click="expense.edit = true" clickable>
 								<q-item-section>
 									{{ expense.name }}
 								</q-item-section>
 								<q-item-section
+									:class="styleAmount(expense.amount)"
+									class="text-weight-bold"
 									avatar
-									:class="`text-weight-bold text-${expense.amount < 0 ? 'red' : 'green'}`"
 								>
-									{{ expense.amount.toFixed(2) }}
+									{{ formatAmount(expense.amount) }}
 								</q-item-section>
 							</q-item>
 						</q-slide-item>
@@ -64,14 +65,14 @@
 						<span
 							:class="`text-subtitle1 text-weight-bold text-${Number.parseFloat(total) < 0 ? 'red' : 'green'}`"
 						>
-							{{ total }}
+							{{ formatAmount(Number.parseFloat(total)) }}
 						</span>
 					</q-item>
 				</div>
 				<div v-else>No expenses created yet</div>
 			</q-card-section>
 			<q-card-actions align="right">
-				<q-btn label="Close" @click="onDialogHide" />
+				<q-btn @click="onDialogHide" label="Close" />
 			</q-card-actions>
 		</q-card>
 	</q-dialog>
@@ -88,6 +89,7 @@ import {
 } from 'vue';
 import { useDialogPluginComponent } from 'quasar';
 
+import { formatAmount, styleAmount } from 'src/composables/useCurrency';
 import { anonClient } from 'src/supabase/anon-client';
 import type { Database } from 'src/supabase/types';
 import type { LocalExpenseDB } from 'src/types/interfaces';

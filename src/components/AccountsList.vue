@@ -8,22 +8,22 @@
 			<div class="lt-md column q-col-gutter-md">
 				<div>
 					<AccountsListCard
-						title="Checking"
 						:accounts="accountsByType('Checking')"
+						title="Checking"
 					/>
 				</div>
 
 				<div>
 					<AccountsListCard
-						title="Savings"
 						:accounts="accountsByType('Savings')"
+						title="Savings"
 					/>
 				</div>
 
 				<div>
 					<AccountsListCard
-						title="Credit Lines"
 						:accounts="accountsByType('Credit Line')"
+						title="Credit Lines"
 					/>
 				</div>
 			</div>
@@ -31,20 +31,21 @@
 			<!-- Desktop -->
 			<div class="gt-sm row items-start q-gutter-md">
 				<AccountsListCard
-					title="Checking"
 					:accounts="accountsByType('Checking')"
 					class="col"
+					title="Checking"
 				/>
 
 				<AccountsListCard
-					title="Savings"
 					:accounts="accountsByType('Savings')"
 					class="col"
+					title="Savings"
 				/>
+
 				<AccountsListCard
-					title="Credit Lines"
 					:accounts="accountsByType('Credit Line')"
 					class="col"
+					title="Credit Lines"
 				/>
 			</div>
 		</div>
@@ -54,22 +55,14 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { storeToRefs } from 'pinia';
-// import { useRouter } from 'vue-router';
 
-// import { storeUser } from 'src/stores/user';
 import { storeAccounts } from 'src/stores/accounts';
-
-// import { formatAmount } from 'src/composables/useCurrency';
 import { sortByName } from 'src/util/account-utils';
 
 import AccountsListCard from './AccountsListCard.vue';
 
-// const user = storeUser();
-// const { settings } = storeToRefs(user);
-
 const accounts = storeAccounts();
 const { accounts: accountsInStore, loading } = storeToRefs(accounts);
-// const { loadAccounts } = accounts;
 
 const accountsByType = computed(() => {
 	return (type: 'Checking' | 'Savings' | 'Credit Line') => {
@@ -78,18 +71,6 @@ const accountsByType = computed(() => {
 			.sort(sortByName);
 	};
 });
-
-// const router = useRouter();
-// const handleAccountClick = (id: number) => {
-// 	router.push({
-// 		name: 'account',
-// 		params: {
-// 			id,
-// 		},
-// 	});
-// };
-
-// await loadAccounts();
 </script>
 
 <style scoped></style>

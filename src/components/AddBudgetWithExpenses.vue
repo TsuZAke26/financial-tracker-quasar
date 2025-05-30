@@ -3,7 +3,7 @@
 		<q-card-section class="text-h6"> Create New Budget </q-card-section>
 
 		<q-card-section>
-			<q-input v-model="budgetName" placeholder="Budget Name" outlined dense />
+			<q-input v-model="budgetName" placeholder="Budget Name" dense outlined />
 		</q-card-section>
 
 		<!-- Add new expense -->
@@ -13,12 +13,12 @@
 
 		<!-- List expenses -->
 		<q-card-section v-if="localExpenses.length > 0">
-			<q-list separator bordered>
+			<q-list bordered separator>
 				<q-slide-item
 					v-for="expense in localExpenses"
 					:key="expense.id"
-					right-color="red"
 					@right="removeLocalExpense(expense)"
+					right-color="red"
 				>
 					<template v-slot:right>
 						<q-icon name="delete" />
@@ -27,33 +27,34 @@
 					<!-- Edit Expense line item -->
 					<q-item v-if="expense.edit">
 						<div class="row no-wrap q-gutter-sm">
-							<q-input v-model="expense.name" dense outlined class="fit" />
+							<q-input v-model="expense.name" class="fit" dense outlined />
 							<q-input
 								v-model.number="expense.amount"
+								class="col-4"
+								type="number"
 								dense
 								outlined
-								type="number"
-								class="col-4"
 							/>
 							<q-btn
-								icon="check"
-								color="primary"
 								class="col-1"
 								@click="expense.edit = false"
+								color="primary"
+								icon="check"
 							/>
 						</div>
 					</q-item>
 
 					<!-- Regular Expense line item -->
-					<q-item v-else clickable @click="expense.edit = true">
+					<q-item v-else @click="expense.edit = true" clickable>
 						<q-item-section>
 							{{ expense.name }}
 						</q-item-section>
 						<q-item-section
+							:class="styleAmount(expense.amount)"
+							class="text-weight-bold"
 							avatar
-							:class="`text-weight-bold text-${expense.amount < 0 ? 'red' : 'green'}`"
 						>
-							{{ expense.amount.toFixed(2) }}
+							{{ formatAmount(expense.amount) }}
 						</q-item-section>
 					</q-item>
 				</q-slide-item>
@@ -65,7 +66,7 @@
 				<span
 					:class="`text-subtitle1 text-weight-bold text-${Number.parseFloat(total) < 0 ? 'red' : 'green'}`"
 				>
-					{{ total }}
+					{{ formatAmount(Number.parseFloat(total)) }}
 				</span>
 			</q-item>
 		</q-card-section>
@@ -73,18 +74,18 @@
 		<!-- Save/Clear buttons -->
 		<q-card-actions align="right" class="q-ma-sm">
 			<q-btn
-				label="Cancel"
-				color="negative"
-				unelevated
 				@click="$emit('close-new-budget')"
+				color="negative"
+				label="Cancel"
+				unelevated
 			/>
 			<q-space />
-			<q-btn label="Clear" @click="handleClearBudgets" outline />
+			<q-btn @click="handleClearBudgets" label="Clear" outline />
 			<q-btn
-				label="Save"
-				color="primary"
-				@click="handleSaveBudget"
 				:disable="preventSave"
+				@click="handleSaveBudget"
+				color="primary"
+				label="Save"
 				unelevated
 			/>
 		</q-card-actions>
@@ -94,10 +95,11 @@
 <script setup lang="ts">
 import { computed, type Ref, ref } from 'vue';
 
+import { formatAmount, styleAmount } from 'src/composables/useCurrency';
 import { anonClient } from 'src/supabase/anon-client';
+import { addNumbers } from 'src/util/number-utils';
 
 import AddExpenseItem from './AddExpenseItem.vue';
-import { addNumbers } from 'src/util/number-utils';
 
 const props = defineProps({
 	accountId: {
@@ -181,7 +183,7 @@ const handleSaveBudget = async () => {
 			if (expensesError) {
 				throw expensesError;
 			}
-			await props.loadBudgets();
+			await props.loadBudgets(props.accountId);
 			emit('close-new-budget');
 		}
 	} catch (error) {

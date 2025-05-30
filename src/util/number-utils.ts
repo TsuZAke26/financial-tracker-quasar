@@ -5,5 +5,5 @@ export function addNumbers(numbers: number[]) {
 	numbers.forEach((number) => {
 		total = bigDecimal.add(total, number);
 	});
-	return bigDecimal.getPrettyValue(Number.parseFloat(total).toFixed(2));
+	return bigDecimal.getPrettyValue(bigDecimal.round(total, 2));
 }

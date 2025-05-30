@@ -1,13 +1,13 @@
 <template>
 	<q-page class="row items-start justify-evenly q-pa-lg q-mb-xl">
 		<AccountsList />
-		<q-page-sticky position="bottom-right" :offset="[24, 24]">
+		<q-page-sticky :offset="[24, 24]" position="bottom-right">
 			<q-btn
-				fab
-				icon="add"
-				color="secondary"
-				label="Account"
 				@click="showAddAccountDialog"
+				color="secondary"
+				icon="add"
+				label="Account"
+				fab
 			/>
 		</q-page-sticky>
 	</q-page>

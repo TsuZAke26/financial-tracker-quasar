@@ -124,7 +124,6 @@ export const storeTransactions = defineStore('transactions', () => {
 			loading.value = true;
 
 			const transactionId = transaction.id;
-			console.log('transaction to edit: ', transactionId);
 			if (!transactionId) {
 				throw Error('Missing transaction id');
 			}

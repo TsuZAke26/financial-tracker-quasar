@@ -3,21 +3,20 @@
 		<AccountInfoCard :account-id="id" />
 
 		<div class="q-py-md" />
-		<!-- <div style="height: 4rem" /> -->
 
-		<q-card flat bordered>
+		<q-card bordered flat>
 			<q-tabs
 				v-model="tab"
-				dense
 				class="text-grey"
 				active-color="primary"
-				indicator-color="primary"
 				align="justify"
+				indicator-color="primary"
+				dense
 				narrow-indicator
 			>
-				<q-tab name="transactions" label="Transactions" />
-				<q-tab name="import-export" label="Import/Export" />
-				<q-tab name="budgets" label="Budgets" />
+				<q-tab label="Transactions" name="transactions" />
+				<q-tab label="Import/Export" name="import-export" />
+				<q-tab label="Budgets" name="budgets" />
 			</q-tabs>
 			<q-tab-panels v-model="tab" animated>
 				<q-tab-panel name="transactions">
@@ -57,15 +56,15 @@
 		<!-- <AccountInfoCard :account-id="id" /> -->
 		<q-page-sticky
 			v-if="tab === 'transactions'"
-			position="bottom-right"
 			:offset="[24, 24]"
+			position="bottom-right"
 		>
 			<q-btn
-				fab
-				icon="add"
-				color="secondary"
-				label="Transaction"
 				@click="showAddTransactionDialog"
+				color="secondary"
+				icon="add"
+				label="Transaction"
+				fab
 			/>
 		</q-page-sticky>
 	</q-page>
@@ -103,7 +102,7 @@ const showAddTransactionDialog = () => {
 		componentProps: {
 			accountId: Number.parseInt(props.id),
 		},
-	}).onOk(() => console.log('add transaction form: ok'));
+	});
 };
 </script>
 

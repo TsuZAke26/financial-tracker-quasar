@@ -1,5 +1,5 @@
 import type { Ref } from 'vue';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { defineStore, acceptHMRUpdate } from 'pinia';
 
 import { useNotify } from 'src/composables/useNotify';
@@ -16,6 +16,9 @@ export const storeUser = defineStore('user', () => {
 		financial: {
 			currencySymbol: '$',
 		},
+	});
+	const currencySymbol = computed(() => {
+		return settings.value.financial.currencySymbol ?? '$';
 	});
 
 	const loadAppSettings = async () => {
@@ -59,6 +62,7 @@ export const storeUser = defineStore('user', () => {
 
 	return {
 		settings,
+		currencySymbol,
 		loadAppSettings,
 		persistAppSettings,
 	};

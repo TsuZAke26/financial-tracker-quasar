@@ -1,38 +1,38 @@
 <template>
-	<q-card flat bordered class="sign-in-card">
+	<q-card class="sign-in-card" bordered flat>
 		<q-card-section class="text-h5 text-weight-bold">Sign In</q-card-section>
 		<q-card-section>
 			<q-form @submit="handleSignIn">
 				<q-input
 					v-model="email"
-					outlined
-					type="email"
-					label="Email Address"
 					:rules="[(val, rules) => rules.email(val) || 'Enter a valid email']"
+					label="Email Address"
+					type="email"
 					lazy-rules
+					outlined
 				/>
 				<q-input
 					v-if="usePassword"
 					v-model="password"
-					outlined
-					type="password"
-					label="Password"
 					:rules="[(val) => !!val || 'Enter a password']"
+					label="Password"
+					type="password"
 					lazy-rules
+					outlined
 				/>
 				<q-toggle v-model="usePassword" label="Use password instead" />
 				<q-btn
-					label="Sign In"
-					type="submit"
 					class="full-width q-mt-lg"
 					color="primary"
+					label="Sign In"
+					type="submit"
 				/>
 			</q-form>
 		</q-card-section>
 		<q-card-section class="row justify-center">
 			<div>
 				Not registered yet?
-				<a href="#" @click="$emit('sign-up')">Sign up here</a>
+				<a @click="$emit('sign-up')" href="#">Sign up here</a>
 			</div>
 		</q-card-section>
 	</q-card>

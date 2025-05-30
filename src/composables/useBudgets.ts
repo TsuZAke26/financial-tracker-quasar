@@ -12,9 +12,12 @@ export default () => {
 		Database['public']['Tables']['budgets_expenses']['Row'][]
 	> = ref([]);
 
-	const loadBudgets = async () => {
+	const loadBudgets = async (accountId: number) => {
 		try {
-			const { data, error } = await anonClient.from('budgets').select();
+			const { data, error } = await anonClient
+				.from('budgets')
+				.select()
+				.eq('account_id', accountId);
 
 			if (error) {
 				throw error;

@@ -95,7 +95,6 @@ export const storeAccounts = defineStore(
 				if (data) {
 					const accountIndex = _findAccountIndex(accountId);
 					if (accountIndex !== -1) {
-						console.log(`account to update: ${accountId}`);
 						accounts.value.splice(accountIndex, 1, data);
 					}
 					useNotify('positive', 'Account updated successfully!');
@@ -123,7 +122,6 @@ export const storeAccounts = defineStore(
 
 				const accountIndex = _findAccountIndex(accountId);
 				if (accountIndex !== -1) {
-					console.log(`account to delete: ${accountId}`);
 					accounts.value.splice(accountIndex, 1);
 				}
 				useNotify('positive', 'Account Deleted');
