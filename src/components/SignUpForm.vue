@@ -4,10 +4,10 @@
 		<q-card-section>
 			<q-form @submit="handleSignUp">
 				<q-input
-					v-model="username"
+					v-model="email"
 					outlined
 					type="email"
-					label="Username"
+					label="Email Address"
 					:rules="[(val, rules) => rules.email(val) || 'Enter a valid email']"
 					lazy-rules
 				/>
@@ -38,13 +38,38 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import type { AuthError } from '@supabase/supabase-js';
+
+import { useNotify } from 'src/composables/useNotify';
+import { anonClient } from 'src/supabase/anon-client';
 
 defineEmits(['sign-in']);
 
-const username = ref('');
+const router = useRouter();
+
+const email = ref('');
 const password = ref('');
 
-const handleSignUp = async () => {};
+const handleSignUp = async () => {
+	try {
+		const { data, error } = await anonClient.auth.signUp({
+			email: email.value,
+			password: password.value,
+		});
+		if (error) {
+			throw error;
+		}
+		if (data) {
+			useNotify('positive', 'Registered successfully!');
+			router.push({ name: 'home' });
+		}
+	} catch (error) {
+		const supabaseError = error as AuthError;
+		useNotify('negative', 'Login Failed', supabaseError.message);
+		console.error(supabaseError);
+	}
+};
 </script>
 
 <style scoped>
