@@ -73,13 +73,14 @@
 import { type Ref, ref } from 'vue';
 import { type PostgrestError } from '@supabase/supabase-js';
 
+import { updateAccountBalances } from 'src/composables/useAccounts';
+import { useNotify } from 'src/composables/useNotify';
 import {
 	generateImportTemplate,
 	convertCSVRowsToJSON,
 	createTransactionRows,
 	createTransactionExport,
 } from 'src/composables/useImportExport';
-import { useNotify } from 'src/composables/useNotify';
 import { storeTransactions } from 'src/stores/transactions';
 import { anonClient } from 'src/supabase/anon-client';
 
@@ -126,6 +127,7 @@ const importTransactions = async () => {
 		if (data) {
 			data.forEach((transaction) => addTransactionToStore(transaction));
 			useNotify('positive', 'Transactions imported successfully');
+			await updateAccountBalances();
 			importFile.value = null;
 		}
 	} catch (error) {
