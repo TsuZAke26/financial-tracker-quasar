@@ -23,7 +23,7 @@
 				</div>
 			</div>
 
-			<div v-else>No accounts created yet</div>
+			<div v-else class="text-center">No accounts created yet</div>
 		</q-card-section>
 	</q-card>
 </template>
