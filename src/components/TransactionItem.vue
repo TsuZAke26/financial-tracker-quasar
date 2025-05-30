@@ -11,7 +11,7 @@
 
 			<!-- Amount -->
 			<div
-				:style="styleAmount(transaction.amount)"
+				:class="styleAmount(transaction.amount)"
 				class="text-weight-medium col-auto"
 			>
 				{{ formatAmount(transaction.amount) }}
