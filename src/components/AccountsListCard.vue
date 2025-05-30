@@ -5,19 +5,25 @@
 		</q-card-section>
 
 		<q-card-section class="q-gutter-md">
-			<div
-				v-for="account in accounts"
-				:key="account.id"
-				clickable
-				@click="handleAccountClick(account.id)"
-				class="row justify-between items-center cursor-pointer rounded-borders q-pa-sm"
-				style="border: 1px solid grey"
-			>
-				<div class="ellipsis">{{ account.name }}</div>
-				<div>
-					{{ formatAmount(settings.financial.currencySymbol, account.balance) }}
+			<div v-if="accounts.length > 0">
+				<div
+					v-for="account in accounts"
+					:key="account.id"
+					clickable
+					@click="handleAccountClick(account.id)"
+					class="row justify-between items-center cursor-pointer rounded-borders q-pa-sm"
+					style="border: 1px solid grey"
+				>
+					<div class="ellipsis">{{ account.name }}</div>
+					<div>
+						{{
+							formatAmount(settings.financial.currencySymbol, account.balance)
+						}}
+					</div>
 				</div>
 			</div>
+
+			<div v-else>No accounts created yet</div>
 		</q-card-section>
 	</q-card>
 </template>
