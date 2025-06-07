@@ -88,13 +88,6 @@ export type Database = {
             foreignKeyName: "budgets_account_id_fkey"
             columns: ["account_id"]
             isOneToOne: false
-            referencedRelation: "account_balance"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "budgets_account_id_fkey"
-            columns: ["account_id"]
-            isOneToOne: false
             referencedRelation: "accounts"
             referencedColumns: ["id"]
           },
@@ -168,13 +161,6 @@ export type Database = {
             foreignKeyName: "transactions_account_id_fkey"
             columns: ["account_id"]
             isOneToOne: false
-            referencedRelation: "account_balance"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "transactions_account_id_fkey"
-            columns: ["account_id"]
-            isOneToOne: false
             referencedRelation: "accounts"
             referencedColumns: ["id"]
           },
@@ -221,13 +207,7 @@ export type Database = {
       }
     }
     Views: {
-      account_balance: {
-        Row: {
-          balance: number | null
-          id: number | null
-        }
-        Relationships: []
-      }
+      [_ in never]: never
     }
     Functions: {
       [_ in never]: never

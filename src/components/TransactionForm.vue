@@ -28,7 +28,7 @@
 			:rules="[
 				(val) =>
 					/^-?[\d]+\-[0-1]\d\-[0-3]\d$/.test(val) ||
-					'Enter a valud date (YYYY-MM-DD)',
+					'Enter a valid date (YYYY-MM-DD)',
 			]"
 			mask="####-##-##"
 			outlined

@@ -1,5 +1,8 @@
 <template>
-	<q-page class="q-pa-lg">
+	<q-page
+		class="q-pa-lg"
+		style="max-width: 1024px; width: 100%; margin: 0 auto"
+	>
 		<AccountInfoCard :account-id="id" />
 
 		<div class="q-py-md" />
@@ -17,6 +20,7 @@
 				<q-tab label="Transactions" name="transactions" />
 				<q-tab label="Import/Export" name="import-export" />
 				<q-tab label="Budgets" name="budgets" />
+				<q-tab label="Reports" name="reports" />
 			</q-tabs>
 			<q-tab-panels v-model="tab" animated>
 				<q-tab-panel name="transactions">
@@ -50,6 +54,10 @@
 						</template>
 					</Suspense>
 				</q-tab-panel>
+
+				<q-tab-panel name="reports">
+					<AccountTabReports :account-id="Number.parseInt(id)" />
+				</q-tab-panel>
 			</q-tab-panels>
 		</q-card>
 
@@ -80,6 +88,7 @@ import AccountInfoCard from 'src/components/AccountInfoCard.vue';
 import AccountTabTransactions from 'src/components/AccountTabTransactions.vue';
 import AccountTabImportExport from 'src/components/AccountTabImportExport.vue';
 import AccountTabBudgets from 'src/components/AccountTabBudgets.vue';
+import AccountTabReports from 'src/components/AccountTabReports.vue';
 import AddTransaction from 'src/components/AddTransaction.vue';
 
 const props = defineProps({

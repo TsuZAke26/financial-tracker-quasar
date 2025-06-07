@@ -6,7 +6,7 @@ const userStore = storeUser();
 const { currencySymbol } = userStore;
 
 export const formatAmount = (amount: number) => {
-	if (amount === undefined) return 0;
+	if (amount === undefined) return '0';
 
 	const prefixChar = amount < 0 ? '-' : '';
 	const amountRounded = bigDecimal.round(Math.abs(amount), 2);

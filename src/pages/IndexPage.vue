@@ -1,5 +1,5 @@
 <template>
-	<q-page class="row items-start justify-evenly q-pa-lg q-mb-xl">
+	<q-page class="row items-start justify-evenly q-pa-lg">
 		<AccountsList />
 		<q-page-sticky :offset="[24, 24]" position="bottom-right">
 			<q-btn

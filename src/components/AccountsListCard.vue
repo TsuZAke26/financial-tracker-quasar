@@ -5,7 +5,7 @@
 		</q-card-section>
 
 		<q-card-section>
-			<div v-if="accounts.length > 0" class="q-gutter-md">
+			<!-- <div v-if="accounts.length > 0" class="q-gutter-md">
 				<div
 					v-for="account in accounts"
 					:key="account.id"
@@ -19,8 +19,24 @@
 						{{ formatAmount(account.balance) }}
 					</div>
 				</div>
+			</div> -->
+			<div v-if="accounts.length > 0">
+				<q-list bordered separator>
+					<q-item
+						v-for="account in accounts"
+						:key="account.id"
+						@click="handleAccountClick(account.id)"
+						clickable
+					>
+						<q-item-section class="ellipsis-2-lines">
+							{{ account.name }}
+						</q-item-section>
+						<q-item-section :class="styleAmount(account.balance)" side>
+							{{ formatAmount(account.balance) }}
+						</q-item-section>
+					</q-item>
+				</q-list>
 			</div>
-
 			<div v-else class="text-center">No accounts created yet</div>
 		</q-card-section>
 	</q-card>
@@ -30,7 +46,7 @@
 import type { PropType } from 'vue';
 import { useRouter } from 'vue-router';
 
-import { formatAmount } from 'src/composables/useCurrency';
+import { formatAmount, styleAmount } from 'src/composables/useCurrency';
 import type { Database } from 'src/supabase/types';
 
 defineProps({
@@ -60,6 +76,6 @@ const handleAccountClick = (id: number) => {
 <style scoped>
 .accounts-list-card {
 	width: 100%;
-	min-width: 360px;
+	min-width: 350px;
 }
 </style>

@@ -4,32 +4,7 @@
 			<q-spinner size="3em" />
 		</div>
 		<div v-else>
-			<!-- Mobile -->
-			<div class="lt-md column q-col-gutter-md">
-				<div>
-					<AccountsListCard
-						:accounts="accountsByType('Checking')"
-						title="Checking"
-					/>
-				</div>
-
-				<div>
-					<AccountsListCard
-						:accounts="accountsByType('Savings')"
-						title="Savings"
-					/>
-				</div>
-
-				<div>
-					<AccountsListCard
-						:accounts="accountsByType('Credit Line')"
-						title="Credit Lines"
-					/>
-				</div>
-			</div>
-
-			<!-- Desktop -->
-			<div class="gt-sm row items-start q-gutter-md">
+			<div class="row items-start q-gutter-md">
 				<AccountsListCard
 					:accounts="accountsByType('Checking')"
 					class="col"
