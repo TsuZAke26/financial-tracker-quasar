@@ -16,10 +16,7 @@ export const formatAmount = (amount: number) => {
 };
 
 export const formatAmountString = (amount: string) => {
-	const amountAsBigDec = new bigDecimal(amount);
-	if (amountAsBigDec.compareTo(new bigDecimal(0)) === 0) {
-		return '0';
-	}
+	const amountAsBigDec = new bigDecimal(amount).abs();
 
 	const prefixChar = amount[0] === '-' ? amount[0] : '';
 	const amountFormatted = amountAsBigDec.round(2).getPrettyValue();

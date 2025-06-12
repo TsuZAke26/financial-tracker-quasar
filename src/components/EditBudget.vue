@@ -63,7 +63,8 @@
 					<q-item class="row justify-between">
 						<span class="text-subtitle1 text-weight-medium">Remaining:</span>
 						<span
-							:class="`text-subtitle1 text-weight-bold text-${Number.parseFloat(total) < 0 ? 'red' : 'green'}`"
+							class="text-subtitle1 text-weight-bold"
+							:class="Number.parseFloat(total) < 0 ? 'text-red' : ''"
 						>
 							{{ formatAmountString(total) }}
 						</span>

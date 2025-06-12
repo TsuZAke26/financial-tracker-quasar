@@ -79,7 +79,7 @@ const creditUtilizationStyle = (utilization: number) => {
 	if (utilization <= 30) {
 		textColor = textColor.concat('green');
 	} else if (utilization <= 60) {
-		textColor = textColor.concat('yellow');
+		textColor = textColor.concat('amber');
 	} else {
 		textColor = textColor.concat('red');
 	}
