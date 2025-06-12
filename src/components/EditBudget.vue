@@ -65,7 +65,7 @@
 						<span
 							:class="`text-subtitle1 text-weight-bold text-${Number.parseFloat(total) < 0 ? 'red' : 'green'}`"
 						>
-							{{ formatAmount(Number.parseFloat(total)) }}
+							{{ formatAmountString(total) }}
 						</span>
 					</q-item>
 				</div>
@@ -89,7 +89,11 @@ import {
 } from 'vue';
 import { useDialogPluginComponent } from 'quasar';
 
-import { formatAmount, styleAmount } from 'src/composables/useCurrency';
+import {
+	formatAmount,
+	formatAmountString,
+	styleAmount,
+} from 'src/composables/useCurrency';
 import { anonClient } from 'src/supabase/anon-client';
 import type { Database } from 'src/supabase/types';
 import type { LocalExpenseDB } from 'src/types/interfaces';
@@ -257,6 +261,13 @@ const deleteExpense = async (id: number) => {
 			.eq('id', id);
 		if (error) {
 			throw error;
+		} else {
+			const localExpenseIndex = localExpenses.value.findIndex(
+				(localExpense) => localExpense.id === id
+			);
+			if (localExpenseIndex !== -1) {
+				localExpenses.value.splice(localExpenseIndex, 1);
+			}
 		}
 	} catch (error) {
 		console.error(error);

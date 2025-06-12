@@ -28,12 +28,12 @@
 						@click="handleAccountClick(account.id)"
 						clickable
 					>
-						<q-item-section class="ellipsis-2-lines">
-							{{ account.name }}
-						</q-item-section>
-						<q-item-section :class="styleAmount(account.balance)" side>
-							{{ formatAmount(account.balance) }}
-						</q-item-section>
+						<div class="fit justify-between row q-pt-sm">
+							<span>{{ account.name }}</span>
+							<span :class="styleAmount(account.balance)">{{
+								formatAmount(account.balance)
+							}}</span>
+						</div>
 					</q-item>
 				</q-list>
 			</div>

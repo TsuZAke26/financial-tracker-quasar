@@ -15,6 +15,18 @@ export const formatAmount = (amount: number) => {
 	return prefixChar.concat(currencySymbol).concat(amountFormatted);
 };
 
+export const formatAmountString = (amount: string) => {
+	const amountAsBigDec = new bigDecimal(amount);
+	if (amountAsBigDec.compareTo(new bigDecimal(0)) === 0) {
+		return '0';
+	}
+
+	const prefixChar = amount[0] === '-' ? amount[0] : '';
+	const amountFormatted = amountAsBigDec.round(2).getPrettyValue();
+
+	return prefixChar.concat(currencySymbol).concat(amountFormatted);
+};
+
 export const styleAmount = (amount: number) => {
 	const textColor = amount < 0 ? 'text-red' : null;
 	return textColor;

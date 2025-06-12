@@ -66,7 +66,7 @@
 				<span
 					:class="`text-subtitle1 text-weight-bold text-${Number.parseFloat(total) < 0 ? 'red' : 'green'}`"
 				>
-					{{ formatAmount(Number.parseFloat(total)) }}
+					{{ formatAmountString(total) }}
 				</span>
 			</q-item>
 		</q-card-section>
@@ -95,7 +95,11 @@
 <script setup lang="ts">
 import { computed, type Ref, ref } from 'vue';
 
-import { formatAmount, styleAmount } from 'src/composables/useCurrency';
+import {
+	formatAmount,
+	formatAmountString,
+	styleAmount,
+} from 'src/composables/useCurrency';
 import { anonClient } from 'src/supabase/anon-client';
 import { addNumbers } from 'src/util/number-utils';
 
