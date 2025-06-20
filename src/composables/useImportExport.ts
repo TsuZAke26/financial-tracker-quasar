@@ -5,8 +5,8 @@ import Papa from 'papaparse';
 import type { Database } from 'src/supabase/types';
 
 const TRANSACTION_IMPORT_COLUMN_HEADERS = [
-	'category_main',
-	'category_misc',
+	'category_first',
+	'category_second',
 	'date',
 	'name',
 	'amount',

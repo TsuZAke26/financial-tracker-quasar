@@ -58,29 +58,29 @@ const { addTransaction } = transactions;
 const addTransactionFormRef: Ref<QForm | null> = ref(null);
 const transactionData: {
 	account_id: number;
-	category_main: string;
-	category_misc: string | null;
+	category_first: string;
+	category_second: string | null;
 	date: string;
 	name: string;
 	amount: number;
 } = reactive({
 	account_id: props.accountId,
-	category_main: '',
-	category_misc: null,
+	category_first: '',
+	category_second: null,
 	date: new Date().toISOString().split('T')[0] as string,
 	name: '',
 	amount: 0,
 });
 
 const updateTransactionData = (event: {
-	category_main: string;
-	category_misc: string | null;
+	category_first: string;
+	category_second: string | null;
 	date: string;
 	name: string;
 	amount: number;
 }) => {
-	transactionData.category_main = event.category_main;
-	transactionData.category_misc = event.category_misc;
+	transactionData.category_first = event.category_first;
+	transactionData.category_second = event.category_second;
 	transactionData.date = event.date;
 	transactionData.name = event.name;
 	transactionData.amount = event.amount;
@@ -97,8 +97,8 @@ const handleSubmit = async () => {
 		}
 		const payload: Database['public']['Tables']['transactions']['Insert'] = {
 			account_id: props.accountId,
-			category_main: transactionData.category_main,
-			category_misc: transactionData.category_misc,
+			category_first: transactionData.category_first,
+			category_second: transactionData.category_second,
 			date: transactionData.date,
 			name: transactionData.name,
 			amount: transactionData.amount,

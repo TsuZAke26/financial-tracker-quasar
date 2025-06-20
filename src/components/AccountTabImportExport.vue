@@ -171,7 +171,7 @@ const handleExport = async () => {
 
 		const { data, error } = await anonClient
 			.from('transactions')
-			.select('category_main, category_misc, name, date, amount')
+			.select('category_first, category_second, name, date, amount')
 			.eq('account_id', props.accountId)
 			.gte('date', dateStart)
 			.lte('date', dateEnd);

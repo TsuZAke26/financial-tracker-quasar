@@ -93,7 +93,7 @@
 			{
 				name: 'category',
 				label: 'Category',
-				field: 'category_main',
+				field: 'category_first',
 				align: 'left',
 			},
 			{

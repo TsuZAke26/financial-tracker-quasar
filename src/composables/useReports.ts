@@ -21,7 +21,7 @@ function _supabaseReportQuery(
 ) {
 	let query = anonClient
 		.from('transactions')
-		.select('category_main, category_misc, amount')
+		.select('category_first, category_second, amount')
 		.eq('account_id', config.accountId)
 		.gte('date', config.from)
 		.lte('date', config.to);
@@ -76,18 +76,20 @@ export default () => {
 
 					// Get unique returned main categories
 					const fetchedMainCategories = new Set(
-						transactionData.map((transaction) => transaction.category_main)
+						transactionData.map((transaction) => transaction.category_first)
 					);
 					fetchedMainCategories.forEach((category) => {
 						const categoryTotal = _sumAmounts(
 							transactionData
-								.filter((transaction) => category === transaction.category_main)
+								.filter(
+									(transaction) => category === transaction.category_first
+								)
 								.map((transaction) => transaction.amount)
 						);
 
 						const reportData: ReportCategoryData = {
-							category_main: category,
-							category_misc: null,
+							category_first: category,
+							category_second: null,
 							amount: categoryTotal.round(2).getPrettyValue(),
 							percent: categoryTotal
 								.divide(total)

@@ -23,10 +23,10 @@
 			<!-- Category -->
 			<div class="row">
 				<q-chip color="primary" size="sm">
-					{{ transaction.category_main }}
+					{{ transaction.category_first }}
 				</q-chip>
-				<q-chip v-if="transaction.category_misc" color="secondary" size="sm">
-					{{ transaction.category_misc }}
+				<q-chip v-if="transaction.category_second" color="secondary" size="sm">
+					{{ transaction.category_second }}
 				</q-chip>
 			</div>
 			<!-- Date -->

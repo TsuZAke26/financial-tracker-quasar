@@ -62,29 +62,29 @@ const { updateTransaction, deleteTransaction } = transactions;
 const editTransactionFormRef: Ref<QForm | null> = ref(null);
 const transactionData: {
 	account_id: number;
-	category_main: string;
-	category_misc: string | null;
+	category_first: string;
+	category_second: string | null;
 	date: string;
 	name: string;
 	amount: number;
 } = reactive({
 	account_id: props.transaction.account_id,
-	category_main: props.transaction.category_main,
-	category_misc: props.transaction.category_misc,
+	category_first: props.transaction.category_first,
+	category_second: props.transaction.category_second,
 	date: props.transaction.date,
 	name: props.transaction.name,
 	amount: props.transaction.amount,
 });
 
 const updateTransactionData = (event: {
-	category_main: string;
-	category_misc: string | null;
+	category_first: string;
+	category_second: string | null;
 	date: string;
 	name: string;
 	amount: number;
 }) => {
-	transactionData.category_main = event.category_main;
-	transactionData.category_misc = event.category_misc;
+	transactionData.category_first = event.category_first;
+	transactionData.category_second = event.category_second;
 	transactionData.date = event.date;
 	transactionData.name = event.name;
 	transactionData.amount = event.amount;
@@ -102,8 +102,8 @@ const handleSubmit = async () => {
 		const payload: Database['public']['Tables']['transactions']['Update'] = {
 			id: props.transaction.id,
 			account_id: props.transaction.account_id,
-			category_main: transactionData.category_main,
-			category_misc: transactionData.category_misc,
+			category_first: transactionData.category_first,
+			category_second: transactionData.category_second,
 			date: transactionData.date,
 			name: transactionData.name,
 			amount: transactionData.amount,

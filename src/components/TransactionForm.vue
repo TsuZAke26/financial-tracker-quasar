@@ -8,7 +8,7 @@
 			outlined
 		/>
 		<q-select
-			v-model="localTransaction.category_main"
+			v-model="localTransaction.category_first"
 			:options="TRANSACTION_CATEGORIES_MAIN"
 			:rules="[(val) => !!val || 'Enter a transaction category']"
 			@update:model-value="$emit('transaction-form', localTransaction)"
@@ -16,11 +16,10 @@
 			outlined
 		/>
 		<q-input
-			v-if="localTransaction.category_main === 'Miscellaneous'"
-			v-model="localTransaction.category_misc"
+			v-model="localTransaction.category_second"
 			style="margin-bottom: 40px"
 			@update:model-value="$emit('transaction-form', localTransaction)"
-			placeholder="Miscellaneous Category"
+			placeholder="Secondary Category"
 			outlined
 		/>
 		<q-input
@@ -94,8 +93,8 @@ defineEmits<{
 		e: 'transaction-form',
 		data: {
 			account_id: number;
-			category_main: string;
-			category_misc: string | null;
+			category_first: string;
+			category_second: string | null;
 			date: string;
 			name: string;
 			amount: number;
@@ -108,15 +107,15 @@ const { currencySymbol } = user;
 
 const localTransaction: {
 	account_id: number;
-	category_main: string;
-	category_misc: string | null;
+	category_first: string;
+	category_second: string | null;
 	date: string;
 	name: string;
 	amount: number;
 } = reactive({
 	account_id: -1,
-	category_main: '',
-	category_misc: null,
+	category_first: '',
+	category_second: null,
 	date: new Date().toISOString().split('T')[0] as string,
 	name: '',
 	amount: 0,

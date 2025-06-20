@@ -130,7 +130,7 @@ const filteredTransactions = computed(() => {
 		}
 
 		if (filters.categories.length > 0) {
-			categoryMatch = filters.categories.includes(transaction.category_main);
+			categoryMatch = filters.categories.includes(transaction.category_first);
 		}
 
 		return nameMatch && categoryMatch;

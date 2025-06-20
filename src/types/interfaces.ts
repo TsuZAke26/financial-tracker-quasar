@@ -7,8 +7,8 @@ export interface LocalExpenseDB {
 }
 
 export interface ReportCategoryData {
-	category_main: string;
-	category_misc: string | null;
+	category_first: string;
+	category_second: string | null;
 	amount: string;
 	percent: string;
 }

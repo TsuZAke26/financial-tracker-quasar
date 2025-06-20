@@ -129,8 +129,8 @@ export type Database = {
         Row: {
           account_id: number
           amount: number
-          category_main: string
-          category_misc: string | null
+          category_first: string
+          category_second: string | null
           created_at: string
           date: string
           id: number
@@ -139,8 +139,8 @@ export type Database = {
         Insert: {
           account_id: number
           amount: number
-          category_main?: string
-          category_misc?: string | null
+          category_first?: string
+          category_second?: string | null
           created_at?: string
           date?: string
           id?: number
@@ -149,8 +149,8 @@ export type Database = {
         Update: {
           account_id?: number
           amount?: number
-          category_main?: string
-          category_misc?: string | null
+          category_first?: string
+          category_second?: string | null
           created_at?: string
           date?: string
           id?: number
