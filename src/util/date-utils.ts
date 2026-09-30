@@ -6,3 +6,10 @@ export function toISODate(input: Date) {
 	const delimiter = '-';
 	return [year, month, dayOfMonth].join(delimiter);
 }
+
+export function toISODateFirstDayOfMonth(input: Date) {
+	const year = input.getUTCFullYear();
+	const month = (input.getUTCMonth() + 1).toString().padStart(2, '0');
+	const delimiter = '-';
+	return [year, month, '01'].join(delimiter);
+}

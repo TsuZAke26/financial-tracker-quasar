@@ -120,7 +120,7 @@ import { ref, type Ref } from 'vue';
 
 import useReports, { type ReportConfig } from 'src/composables/useReports';
 import type { ReportCategoryData } from 'src/types/interfaces';
-import { toISODate } from 'src/util/date-utils';
+import { toISODate, toISODateFirstDayOfMonth } from 'src/util/date-utils';
 
 const props = defineProps({
 	accountId: {
@@ -132,7 +132,7 @@ const props = defineProps({
 const reports = useReports();
 const { loading, generateReport } = reports;
 
-const fromDate = ref(toISODate(new Date()));
+const fromDate = ref(toISODateFirstDayOfMonth(new Date()));
 const toDate = ref(toISODate(new Date()));
 const reportData: Ref<ReportCategoryData[]> = ref([]);
 
