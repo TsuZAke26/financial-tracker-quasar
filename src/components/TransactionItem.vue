@@ -47,7 +47,7 @@ import EditTransaction from 'src/components/EditTransaction.vue';
 const props = defineProps({
 	transaction: {
 		type: Object as PropType<
-			Database['public']['Tables']['transactions']['Row']
+			Database['accounts']['Tables']['transactions']['Row']
 		>,
 		required: true,
 	},

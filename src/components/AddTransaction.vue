@@ -95,7 +95,7 @@ const handleSubmit = async () => {
 		if (!userId) {
 			throw new Error('Not authenticated');
 		}
-		const payload: Database['public']['Tables']['transactions']['Insert'] = {
+		const payload: Database['accounts']['Tables']['transactions']['Insert'] = {
 			account_id: props.accountId,
 			category_first: transactionData.category_first,
 			category_second: transactionData.category_second,

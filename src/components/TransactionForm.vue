@@ -78,7 +78,7 @@ import { TRANSACTION_CATEGORIES_MAIN } from 'src/types/constants';
 const props = defineProps({
 	transaction: {
 		type: Object as PropType<
-			Database['public']['Tables']['transactions']['Row']
+			Database['accounts']['Tables']['transactions']['Row']
 		>,
 		default: () => {},
 	},

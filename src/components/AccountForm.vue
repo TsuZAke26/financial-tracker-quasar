@@ -34,7 +34,7 @@ import type { Database } from 'src/supabase/types';
 
 const props = defineProps({
 	account: {
-		type: Object as PropType<Database['public']['Tables']['accounts']['Row']>,
+		type: Object as PropType<Database['accounts']['Tables']['accounts']['Row']>,
 		default: () => {},
 	},
 	loading: {
@@ -45,7 +45,7 @@ const props = defineProps({
 
 defineEmits(['account-form']);
 
-const localAccount: Database['public']['Tables']['accounts']['Update'] =
+const localAccount: Database['accounts']['Tables']['accounts']['Update'] =
 	reactive({
 		name: '',
 		account_type: 'Checking',

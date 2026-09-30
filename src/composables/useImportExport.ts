@@ -29,10 +29,10 @@ export const convertCSVRowsToJSON = async (
 };
 
 export const createTransactionRows = (accountId: number, csvRows: any[]) => {
-	const transactionsToInsert: Database['public']['Tables']['transactions']['Insert'][] =
+	const transactionsToInsert: Database['accounts']['Tables']['transactions']['Insert'][] =
 		[];
 	csvRows.forEach((csvRowJSON) => {
-		const supabaseTransactionToInsert: Database['public']['Tables']['transactions']['Insert'] =
+		const supabaseTransactionToInsert: Database['accounts']['Tables']['transactions']['Insert'] =
 			{
 				...csvRowJSON,
 			};

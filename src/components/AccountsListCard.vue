@@ -56,7 +56,7 @@ defineProps({
 	},
 	accounts: {
 		type: Array as PropType<
-			Array<Database['public']['Tables']['accounts']['Row']>
+			Array<Database['accounts']['Tables']['accounts']['Row']>
 		>,
 		required: true,
 	},

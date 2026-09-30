@@ -76,7 +76,7 @@ const handleSubmit = async () => {
 		if (!userId) {
 			throw new Error('Not authenticated');
 		}
-		const payload: Database['public']['Tables']['accounts']['Insert'] = {
+		const payload: Database['accounts']['Tables']['accounts']['Insert'] = {
 			user_id: userId as string,
 			name: accountData.name,
 			account_type: accountData.account_type,

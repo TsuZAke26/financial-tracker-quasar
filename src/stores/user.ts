@@ -23,6 +23,7 @@ export const storeUser = defineStore('user', () => {
 
 	const loadAppSettings = async () => {
 		const { data, error } = await anonClient
+			.schema('users')	
 			.from('user_settings')
 			.select('app_settings')
 			.single();
@@ -49,7 +50,7 @@ export const storeUser = defineStore('user', () => {
 			useNotify('negative', 'Not Authenticated');
 		}
 
-		const { error } = await anonClient.from('user_settings').upsert({
+		const { error } = await anonClient.schema('users').from('user_settings').upsert({
 			user_id: userId as string,
 			app_settings: JSON.parse(JSON.stringify(settings.value)),
 		});

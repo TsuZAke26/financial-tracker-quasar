@@ -46,7 +46,7 @@ defineEmits({
 
 const props = defineProps({
 	account: {
-		type: Object as PropType<Database['public']['Tables']['accounts']['Row']>,
+		type: Object as PropType<Database['accounts']['Tables']['accounts']['Row']>,
 		default: () => {},
 	},
 });
@@ -85,7 +85,7 @@ const handleSubmit = async () => {
 		if (!userId) {
 			throw new Error('Not authenticated');
 		}
-		const payload: Database['public']['Tables']['accounts']['Update'] = {
+		const payload: Database['accounts']['Tables']['accounts']['Update'] = {
 			id: accountData.id,
 			user_id: userId as string,
 			name: accountData.name,

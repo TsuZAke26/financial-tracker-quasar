@@ -14,7 +14,7 @@ const fetchSize = 10;
 export const storeTransactions = defineStore('transactions', () => {
 	const loading = ref(false);
 	const transactions: Ref<
-		Database['public']['Tables']['transactions']['Row'][]
+		Database['accounts']['Tables']['transactions']['Row'][]
 	> = ref([]);
 	let totalTransactions = -1;
 	let transactionRangeStart = 0;
@@ -22,7 +22,7 @@ export const storeTransactions = defineStore('transactions', () => {
 
 	const loadTransactionCount = async () => {
 		const { count, error } = await anonClient
-			.from('transactions')
+			.schema('accounts').from('transactions')
 			.select('*', { count: 'planned', head: true });
 		if (error) {
 			throw error;
@@ -32,7 +32,7 @@ export const storeTransactions = defineStore('transactions', () => {
 	};
 
 	const addTransactionToStore = (
-		transaction: Database['public']['Tables']['transactions']['Row']
+		transaction: Database['accounts']['Tables']['transactions']['Row']
 	) => {
 		const index = transactions.value.findIndex(
 			(storeTransaction) => transaction.id === storeTransaction.id
@@ -63,7 +63,7 @@ export const storeTransactions = defineStore('transactions', () => {
 			const rangeStart = transactionRangeStart * fetchSize;
 			const rangeEnd = (transactionRangeStart + 1) * fetchSize - 1;
 			const { data, error } = await anonClient
-				.from('transactions')
+				.schema('accounts').from('transactions')
 				.select()
 				.eq('account_id', accountId)
 				.order('date', { ascending: false })
@@ -89,13 +89,13 @@ export const storeTransactions = defineStore('transactions', () => {
 	};
 
 	const addTransaction = async (
-		newTransaction: Database['public']['Tables']['transactions']['Insert']
+		newTransaction: Database['accounts']['Tables']['transactions']['Insert']
 	) => {
 		try {
 			loading.value = true;
 
 			const { data, error } = await anonClient
-				.from('transactions')
+				.schema('accounts').from('transactions')
 				.insert(newTransaction)
 				.select()
 				.single();
@@ -118,7 +118,7 @@ export const storeTransactions = defineStore('transactions', () => {
 	};
 
 	const updateTransaction = async (
-		transaction: Database['public']['Tables']['transactions']['Update']
+		transaction: Database['accounts']['Tables']['transactions']['Update']
 	) => {
 		try {
 			loading.value = true;
@@ -128,7 +128,7 @@ export const storeTransactions = defineStore('transactions', () => {
 				throw Error('Missing transaction id');
 			}
 			const { data, error } = await anonClient
-				.from('transactions')
+				.schema('accounts').from('transactions')
 				.update(transaction)
 				.eq('id', transactionId)
 				.select()
@@ -160,7 +160,7 @@ export const storeTransactions = defineStore('transactions', () => {
 			loading.value = true;
 
 			const { error } = await anonClient
-				.from('transactions')
+				.schema('accounts').from('transactions')
 				.delete()
 				.eq('id', transactionId);
 			if (error) {

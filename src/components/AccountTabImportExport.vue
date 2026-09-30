@@ -118,7 +118,7 @@ const importTransactions = async () => {
 		);
 
 		const { data, error } = await anonClient
-			.from('transactions')
+			.schema('accounts').from('transactions')
 			.insert(transactionsToInsert)
 			.select();
 		if (error) {
@@ -170,7 +170,7 @@ const handleExport = async () => {
 			.concat(monthEndDay);
 
 		const { data, error } = await anonClient
-			.from('transactions')
+			.schema('accounts').from('transactions')
 			.select('category_first, category_second, name, date, amount')
 			.eq('account_id', props.accountId)
 			.gte('date', dateStart)

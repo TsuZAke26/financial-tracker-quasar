@@ -20,7 +20,7 @@ function _supabaseReportQuery(
 	config: ReportConfig
 ) {
 	let query = anonClient
-		.from('transactions')
+		.schema('accounts').from('transactions')
 		.select('category_first, category_second, amount')
 		.eq('account_id', config.accountId)
 		.gte('date', config.from)
@@ -52,7 +52,7 @@ export default () => {
 			loading.value = true;
 
 			const { data: accountData, error: accountError } = await anonClient
-				.from('accounts')
+				.schema('accounts').from('accounts')
 				.select('account_type')
 				.eq('id', config.accountId)
 				.single();

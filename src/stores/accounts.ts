@@ -10,7 +10,7 @@ export const storeAccounts = defineStore(
 	'accounts',
 	() => {
 		const loading = ref(false);
-		const accounts: Ref<Database['public']['Tables']['accounts']['Row'][]> =
+		const accounts: Ref<Database['accounts']['Tables']['accounts']['Row'][]> =
 			ref([]);
 
 		const _findAccountIndex = (id: number) => {
@@ -27,7 +27,7 @@ export const storeAccounts = defineStore(
 		const loadAccounts = async () => {
 			try {
 				loading.value = true;
-				const { data, error } = await anonClient.from('accounts').select();
+				const { data, error } = await anonClient.schema('accounts').from('accounts').select();
 
 				if (error) {
 					throw error;
@@ -48,12 +48,12 @@ export const storeAccounts = defineStore(
 		};
 
 		const addAccount = async (
-			newAccount: Database['public']['Tables']['accounts']['Insert']
+			newAccount: Database['accounts']['Tables']['accounts']['Insert']
 		) => {
 			try {
 				loading.value = true;
 				const { data, error } = await anonClient
-					.from('accounts')
+					.schema('accounts').from('accounts')
 					.insert(newAccount)
 					.select()
 					.single();
@@ -74,7 +74,7 @@ export const storeAccounts = defineStore(
 		};
 
 		const updateAccount = async (
-			account: Database['public']['Tables']['accounts']['Update']
+			account: Database['accounts']['Tables']['accounts']['Update']
 		) => {
 			try {
 				loading.value = true;
@@ -84,6 +84,7 @@ export const storeAccounts = defineStore(
 					throw Error('Missing account id');
 				}
 				const { data, error } = await anonClient
+					.schema('accounts')
 					.from('accounts')
 					.update(account)
 					.eq('id', accountId)
@@ -113,7 +114,7 @@ export const storeAccounts = defineStore(
 				loading.value = true;
 
 				const { error } = await anonClient
-					.from('accounts')
+					.schema('accounts').from('accounts')
 					.delete()
 					.eq('id', accountId);
 				if (error) {

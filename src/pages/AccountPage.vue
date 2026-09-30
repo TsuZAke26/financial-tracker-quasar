@@ -19,7 +19,6 @@
 			>
 				<q-tab label="Transactions" name="transactions" />
 				<q-tab label="Import/Export" name="import-export" />
-				<q-tab label="Budgets" name="budgets" />
 				<q-tab label="Reports" name="reports" />
 			</q-tabs>
 			<q-tab-panels v-model="tab" animated>
@@ -39,20 +38,6 @@
 
 				<q-tab-panel name="import-export">
 					<AccountTabImportExport :account-id="Number.parseInt(id)" />
-				</q-tab-panel>
-
-				<q-tab-panel name="budgets">
-					<Suspense>
-						<AccountTabBudgets :account-id="Number.parseInt(id)" />
-						<template #fallback>
-							<div
-								class="row justify-center items-center"
-								style="height: 300px"
-							>
-								<q-spinner size="3rem" />
-							</div>
-						</template>
-					</Suspense>
 				</q-tab-panel>
 
 				<q-tab-panel name="reports">
@@ -87,7 +72,6 @@ import { storeTransactions } from 'src/stores/transactions';
 import AccountInfoCard from 'src/components/AccountInfoCard.vue';
 import AccountTabTransactions from 'src/components/AccountTabTransactions.vue';
 import AccountTabImportExport from 'src/components/AccountTabImportExport.vue';
-import AccountTabBudgets from 'src/components/AccountTabBudgets.vue';
 import AccountTabReports from 'src/components/AccountTabReports.vue';
 import AddTransaction from 'src/components/AddTransaction.vue';
 

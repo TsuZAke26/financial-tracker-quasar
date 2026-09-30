@@ -48,7 +48,7 @@ defineEmits({
 const props = defineProps({
 	transaction: {
 		type: Object as PropType<
-			Database['public']['Tables']['transactions']['Row']
+			Database['accounts']['Tables']['transactions']['Row']
 		>,
 		required: true,
 	},
@@ -99,7 +99,7 @@ const handleSubmit = async () => {
 		if (!userId) {
 			throw new Error('Not authenticated');
 		}
-		const payload: Database['public']['Tables']['transactions']['Update'] = {
+		const payload: Database['accounts']['Tables']['transactions']['Update'] = {
 			id: props.transaction.id,
 			account_id: props.transaction.account_id,
 			category_first: transactionData.category_first,
