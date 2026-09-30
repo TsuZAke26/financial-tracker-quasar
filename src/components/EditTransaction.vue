@@ -36,7 +36,7 @@ import { type PropType, reactive, type Ref, ref } from 'vue';
 import { QForm, useDialogPluginComponent, useQuasar } from 'quasar';
 
 import { storeTransactions } from 'src/stores/transactions';
-import { anonClient } from 'src/supabase/anon-client';
+import { anonClient } from 'src/supabase/clients';
 import type { Database } from 'src/supabase/types';
 
 import TransactionForm from './TransactionForm.vue';

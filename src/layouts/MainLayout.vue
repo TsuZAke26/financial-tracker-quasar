@@ -46,7 +46,7 @@ import { useRouter } from 'vue-router';
 import { Dark } from 'quasar';
 
 import { useNotify } from 'src/composables/useNotify';
-import { anonClient } from 'src/supabase/anon-client';
+import { anonClient } from 'src/supabase/clients';
 
 import DrawerItem, {
 	type DrawerItemProps,

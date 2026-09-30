@@ -44,7 +44,7 @@ import { useRouter } from 'vue-router';
 import type { AuthError } from '@supabase/supabase-js';
 
 import { useNotify } from 'src/composables/useNotify';
-import { anonClient } from 'src/supabase/anon-client';
+import { anonClient } from 'src/supabase/clients';
 
 defineEmits(['sign-up']);
 

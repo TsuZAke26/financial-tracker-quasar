@@ -6,4 +6,14 @@ const anonClient = createClient<Database>(
 	process.env.SUPABASE_KEY as string
 );
 
-export { anonClient };
+const accountsSchema = createClient<Database, 'accounts'>(
+	process.env.SUPABASE_URL as string,
+	process.env.SUPABASE_KEY as string,
+	{
+		db: {
+			schema: 'accounts',
+		},
+	}
+);
+
+export { anonClient, accountsSchema };

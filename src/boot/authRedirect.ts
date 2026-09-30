@@ -1,5 +1,5 @@
 import { defineBoot } from '@quasar/app-vite/wrappers';
-import { anonClient } from 'src/supabase/anon-client';
+import { anonClient } from 'src/supabase/clients';
 
 export default defineBoot(async ({ redirect, urlPath }) => {
 	const isAuthorized = (await anonClient.auth.getSession()).data.session;

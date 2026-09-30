@@ -5,7 +5,7 @@
 <script setup lang="ts">
 import { storeUser } from './stores/user';
 import { storeAccounts } from './stores/accounts';
-import { anonClient } from './supabase/anon-client';
+import { anonClient } from './supabase/clients';
 
 const user = storeUser();
 const { loadAppSettings } = user;

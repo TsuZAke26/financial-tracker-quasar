@@ -82,7 +82,7 @@ import {
 	createTransactionExport,
 } from 'src/composables/useImportExport';
 import { storeTransactions } from 'src/stores/transactions';
-import { anonClient } from 'src/supabase/anon-client';
+import { accountsSchema } from 'src/supabase/clients';
 
 const props = defineProps({
 	accountId: {
@@ -117,8 +117,8 @@ const importTransactions = async () => {
 			csvRowsAsJson
 		);
 
-		const { data, error } = await anonClient
-			.schema('accounts').from('transactions')
+		const { data, error } = await accountsSchema
+			.from('transactions')
 			.insert(transactionsToInsert)
 			.select();
 		if (error) {
@@ -169,8 +169,8 @@ const handleExport = async () => {
 			.concat('-')
 			.concat(monthEndDay);
 
-		const { data, error } = await anonClient
-			.schema('accounts').from('transactions')
+		const { data, error } = await accountsSchema
+			.from('transactions')
 			.select('category_first, category_second, name, date, amount')
 			.eq('account_id', props.accountId)
 			.gte('date', dateStart)

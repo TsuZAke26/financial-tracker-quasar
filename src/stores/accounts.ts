@@ -3,7 +3,7 @@ import { defineStore, acceptHMRUpdate } from 'pinia';
 import type { PostgrestError } from '@supabase/supabase-js';
 
 import { useNotify } from 'src/composables/useNotify';
-import { anonClient } from 'src/supabase/anon-client';
+import { accountsSchema } from 'src/supabase/clients';
 import type { Database } from 'src/supabase/types';
 
 export const storeAccounts = defineStore(
@@ -27,7 +27,7 @@ export const storeAccounts = defineStore(
 		const loadAccounts = async () => {
 			try {
 				loading.value = true;
-				const { data, error } = await anonClient.schema('accounts').from('accounts').select();
+				const { data, error } = await accountsSchema.from('accounts').select();
 
 				if (error) {
 					throw error;
@@ -52,8 +52,8 @@ export const storeAccounts = defineStore(
 		) => {
 			try {
 				loading.value = true;
-				const { data, error } = await anonClient
-					.schema('accounts').from('accounts')
+				const { data, error } = await accountsSchema
+					.from('accounts')
 					.insert(newAccount)
 					.select()
 					.single();
@@ -83,8 +83,7 @@ export const storeAccounts = defineStore(
 				if (!accountId) {
 					throw Error('Missing account id');
 				}
-				const { data, error } = await anonClient
-					.schema('accounts')
+				const { data, error } = await accountsSchema
 					.from('accounts')
 					.update(account)
 					.eq('id', accountId)
@@ -113,8 +112,8 @@ export const storeAccounts = defineStore(
 			try {
 				loading.value = true;
 
-				const { error } = await anonClient
-					.schema('accounts').from('accounts')
+				const { error } = await accountsSchema
+					.from('accounts')
 					.delete()
 					.eq('id', accountId);
 				if (error) {

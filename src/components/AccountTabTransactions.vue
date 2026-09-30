@@ -137,7 +137,7 @@ const filteredTransactions = computed(() => {
 	});
 });
 
-const pageSize = 6;
+const pageSize = 5;
 const currentPage = ref(1);
 const totalPages = computed(() =>
 	Math.ceil(filteredTransactions.value.length / pageSize)

@@ -6,7 +6,7 @@ import {
 	createWebHistory,
 } from 'vue-router';
 import routes from './routes';
-import { anonClient } from 'src/supabase/anon-client';
+import { anonClient } from 'src/supabase/clients';
 
 /*
  * If not building with SSR mode, you can

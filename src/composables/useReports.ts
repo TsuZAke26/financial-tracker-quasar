@@ -3,7 +3,7 @@ import type { PostgrestError } from '@supabase/supabase-js';
 import bigDecimal from 'js-big-decimal';
 
 import { useNotify } from './useNotify';
-import { anonClient } from 'src/supabase/anon-client';
+import { anonClient } from 'src/supabase/clients';
 import type { ReportCategoryData } from 'src/types/interfaces';
 import type { Database } from 'src/supabase/types';
 
@@ -20,7 +20,8 @@ function _supabaseReportQuery(
 	config: ReportConfig
 ) {
 	let query = anonClient
-		.schema('accounts').from('transactions')
+		.schema('accounts')
+		.from('transactions')
 		.select('category_first, category_second, amount')
 		.eq('account_id', config.accountId)
 		.gte('date', config.from)
@@ -52,7 +53,8 @@ export default () => {
 			loading.value = true;
 
 			const { data: accountData, error: accountError } = await anonClient
-				.schema('accounts').from('accounts')
+				.schema('accounts')
+				.from('accounts')
 				.select('account_type')
 				.eq('id', config.accountId)
 				.single();

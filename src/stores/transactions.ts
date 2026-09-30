@@ -6,7 +6,7 @@ import type { PostgrestError } from '@supabase/supabase-js';
 import { useNotify } from 'src/composables/useNotify';
 import { updateAccountBalances } from 'src/composables/useAccounts';
 import type { Database } from 'src/supabase/types';
-import { anonClient } from 'src/supabase/anon-client';
+import { accountsSchema } from 'src/supabase/clients';
 import { sortTransactionsDesc } from 'src/util/transaction-utils';
 
 const fetchSize = 10;
@@ -17,12 +17,12 @@ export const storeTransactions = defineStore('transactions', () => {
 		Database['accounts']['Tables']['transactions']['Row'][]
 	> = ref([]);
 	let totalTransactions = -1;
-	let transactionRangeStart = 0;
+	let currentPage = 0;
 	let totalPages = 0;
 
 	const loadTransactionCount = async () => {
-		const { count, error } = await anonClient
-			.schema('accounts').from('transactions')
+		const { count, error } = await accountsSchema
+			.from('transactions')
 			.select('*', { count: 'planned', head: true });
 		if (error) {
 			throw error;
@@ -60,10 +60,10 @@ export const storeTransactions = defineStore('transactions', () => {
 
 			await loadTransactionCount();
 
-			const rangeStart = transactionRangeStart * fetchSize;
-			const rangeEnd = (transactionRangeStart + 1) * fetchSize - 1;
-			const { data, error } = await anonClient
-				.schema('accounts').from('transactions')
+			const rangeStart = currentPage * fetchSize;
+			const rangeEnd = rangeStart + fetchSize - 1;
+			const { data, error } = await accountsSchema
+				.from('transactions')
 				.select()
 				.eq('account_id', accountId)
 				.order('date', { ascending: false })
@@ -74,7 +74,7 @@ export const storeTransactions = defineStore('transactions', () => {
 			}
 			if (data) {
 				data.forEach((transaction) => addTransactionToStore(transaction));
-				transactionRangeStart++;
+				currentPage++;
 			}
 		} catch (error) {
 			const convertedException = error as PostgrestError;
@@ -94,8 +94,8 @@ export const storeTransactions = defineStore('transactions', () => {
 		try {
 			loading.value = true;
 
-			const { data, error } = await anonClient
-				.schema('accounts').from('transactions')
+			const { data, error } = await accountsSchema
+				.from('transactions')
 				.insert(newTransaction)
 				.select()
 				.single();
@@ -127,11 +127,12 @@ export const storeTransactions = defineStore('transactions', () => {
 			if (!transactionId) {
 				throw Error('Missing transaction id');
 			}
-			const { data, error } = await anonClient
-				.schema('accounts').from('transactions')
+			const { data, error } = await accountsSchema
+				.from('transactions')
 				.update(transaction)
 				.eq('id', transactionId)
 				.select()
+				.limit(1)
 				.single();
 			if (error) {
 				throw error;
@@ -159,8 +160,8 @@ export const storeTransactions = defineStore('transactions', () => {
 		try {
 			loading.value = true;
 
-			const { error } = await anonClient
-				.schema('accounts').from('transactions')
+			const { error } = await accountsSchema
+				.from('transactions')
 				.delete()
 				.eq('id', transactionId);
 			if (error) {
@@ -184,12 +185,12 @@ export const storeTransactions = defineStore('transactions', () => {
 		}
 	};
 
-	const allPagesLoaded = computed(() => transactionRangeStart === totalPages);
+	const allPagesLoaded = computed(() => currentPage === totalPages);
 
 	const resetTransactions = () => {
 		transactions.value = [];
 		totalTransactions = -1;
-		transactionRangeStart = 0;
+		currentPage = 0;
 		totalPages = 0;
 	};
 

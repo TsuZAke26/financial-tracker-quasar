@@ -4,7 +4,7 @@ import { defineStore, acceptHMRUpdate } from 'pinia';
 
 import { useNotify } from 'src/composables/useNotify';
 
-import { anonClient } from 'src/supabase/anon-client';
+import { anonClient } from 'src/supabase/clients';
 import type { AppSettings } from 'src/pages/SettingsPage.vue';
 import { Dark } from 'quasar';
 
@@ -23,7 +23,7 @@ export const storeUser = defineStore('user', () => {
 
 	const loadAppSettings = async () => {
 		const { data, error } = await anonClient
-			.schema('users')	
+			.schema('users')
 			.from('user_settings')
 			.select('app_settings')
 			.single();
@@ -50,10 +50,13 @@ export const storeUser = defineStore('user', () => {
 			useNotify('negative', 'Not Authenticated');
 		}
 
-		const { error } = await anonClient.schema('users').from('user_settings').upsert({
-			user_id: userId as string,
-			app_settings: JSON.parse(JSON.stringify(settings.value)),
-		});
+		const { error } = await anonClient
+			.schema('users')
+			.from('user_settings')
+			.upsert({
+				user_id: userId as string,
+				app_settings: JSON.parse(JSON.stringify(settings.value)),
+			});
 		if (error) {
 			useNotify('negative', 'Error saving app settings', error.message);
 		} else {

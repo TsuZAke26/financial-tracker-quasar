@@ -34,7 +34,7 @@ import { reactive, type Ref, ref } from 'vue';
 import { QForm, useDialogPluginComponent } from 'quasar';
 
 import { storeAccounts } from 'src/stores/accounts';
-import { anonClient } from 'src/supabase/anon-client';
+import { anonClient } from 'src/supabase/clients';
 import type { Database } from 'src/supabase/types';
 
 import AccountForm from './AccountForm.vue';
